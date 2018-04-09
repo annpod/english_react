@@ -9,7 +9,7 @@ export default createStore(
 	composeWithDevTools(
 		applyMiddleware(
 			thunk,
-			routerMiddleware(history),
+			routerMiddleware(),
 		),
 	),
 );

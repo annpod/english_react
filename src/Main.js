@@ -1,21 +1,18 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import PrimaryLayout from '/screens/PrimaryLayout';
+import Vocabulary from '/screens/Vocabulary';
+import Family from '/screens/Family';
 
 const Main = () => (
-	<App centered={false}>
-		<NotificationIntoToast />
-		<Router>
+	<App>
+		<Router history={history}>
 			<Switch>
-				<Route path="/invite/:id" component={EmailConfirmation} />
-				<Route path="/login" component={Login} />
-				<AuthorizedRoute path="/" component={PrimaryLayout} />
-				<Route path="/*" component={NotFound} />
+				<Route path="/" component={Vocabulary} />
+				<Route path="/family" component={Family} />
 			</Switch>
 		</Router>
 	</App>
 );
 
 export default Main;
-
