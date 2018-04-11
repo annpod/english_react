@@ -1,23 +1,13 @@
-const vocabulary = (state = [], action) => {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return [
-        ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completed: false
-        }
-      ]
-    case 'TOGGLE_TODO':
-      return state.map(todo =>
-        (todo.id === action.id)
-          ? {...todo, completed: !todo.completed}
-          : todo
-      )
-    default:
-      return state
-  }
-}
+import {INIT_DATA} from '../actions/index';
+import { selectValues, arrays } from '../data/vocabulary';
+
+const vocabulary = (state = { selectValues: [], arrays: {}}, action) => {
+	switch (action.type) {
+		case INIT_DATA:
+			return {...state, selectValues: selectValues, arrays: arrays};
+		default:
+			return state;
+	}
+};
  
-export default vocabulary
+export default vocabulary;

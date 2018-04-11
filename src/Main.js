@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
-import Vocabulary from '/screens/Vocabulary';
-import Family from '/screens/Family';
+import Vocabulary from './screens/vocabulary/Vocabulary';
+import Family from './screens/Family';
 
 const Main = () => (
 	<App>

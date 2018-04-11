@@ -8,7 +8,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import store from './store';
 import root from './reducers/root';
 
-import Vocabulary from './screens/Vocabulary';
+import Vocabulary from './screens/vocabulary/Vocabulary';
 import Family from './screens/Family';
 
 //const history = syncHistoryWithStore(browserHistory, store);
