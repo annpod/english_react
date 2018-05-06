@@ -26,3 +26,28 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+#letters {
+	height: 25px;
+  display: table;
+}
+#letters ul {
+	list-style: none;
+	display: flex;
+  flex-direction: row;
+  height: 25px;
+}
+li.letter-item{
+	width: 25px;
+	height: 25px;
+	display: flex;
+	border: 1px solid #ccc;
+	background: rgba(0,0,0,0.2);
+	border-radius: 2px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 22px;
+}
+#lettrs.correct li.letter-item{
+  border: 1px solid transparent;
+	background: transparent;
+}

@@ -305,7 +305,7 @@ button+button{margin-left: 10px;}
 }
 .preposition{overflow: hidden;}
 .preposition-text{
-	font-size: 18px;	
+	font-size: 18px;
 }
 .preposition-text select{
 	margin-bottom: 10px;
@@ -639,7 +639,7 @@ button+button{margin-left: 10px;}
 	min-height: 30px;
 	min-width: 30px;
 	height: 30px;
-	width: 30px;	
+	width: 30px;
 }
 .letter {margin-left: 10px;}
 .fill-gaps {
@@ -938,4 +938,19 @@ input[type="checkbox"] {
 	top: 206px;
 	left: 687px;
 
+}
+#letters {
+	min-height: 90px;
+}
+#letters ul {
+	list-style: none;
+	display: flex;
+}
+#letters ul li{
+	width: 25px;
+	height: 25px;
+	display: block;
+	border: 1px solid #ccc;
+	background: rgba(0,0,0,0.2);
+	border-radius: 2px;
 }

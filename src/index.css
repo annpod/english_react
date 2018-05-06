@@ -632,8 +632,20 @@ button+button{margin-left: 10px;}
 	border: 1px dotted #777;
 	display: inline-block;
 }
-.letters {
+#letters {
 	min-height: 90px;
+}
+#letters ul {
+	list-style: none;
+	display: flex;
+}
+#letters ul li{
+	width: 25px;
+	height: 25px;
+	display: block;
+	border: 1px solid #ccc;
+	background: rgba(0,0,0,0.2);
+	border-radius: 2px;
 }
 .letter-item {
 	min-height: 30px;
@@ -938,4 +950,40 @@ input[type="checkbox"] {
 	top: 206px;
 	left: 687px;
 
+}
+#letters {
+	height: 25px;
+  display: table;
+}
+#letters ul {
+	list-style: none;
+	display: flex;
+  flex-direction: row;
+  height: 25px;
+}
+li.letter-item{
+	width: 25px;
+	height: 25px;
+	display: flex;
+	border: 1px solid rgba(0,0,0,0.4);
+	background: rgba(0,0,0,0.2);
+	border-radius: 2px;
+  text-align: center;
+  font-size: 16px;
+  line-height: 24px;
+	margin: 1px;
+}
+#letters.correct li.letter-item{
+  border: 1px solid transparent;
+	background: transparent;
+}
+.pairs {
+	display: flex;
+	flex-direction: row;
+	width: 200px;
+}
+.leftSet, .rightSet {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
 }
