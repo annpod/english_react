@@ -188,11 +188,11 @@ button {
 	padding: 3px;
 	cursor: pointer;
 	outline: none !important;
+	margin: 2px;
 }
 hr{
 	margin: 20px 10px;
 }
-button+button{margin-left: 10px;}
 .button-new{
 	background: url('/images/next.svg') no-repeat #1095d8 center center;
 	border: none;
@@ -980,10 +980,14 @@ li.letter-item{
 .pairs {
 	display: flex;
 	flex-direction: row;
-	width: 200px;
+	width: 400px;
 }
+
 .leftSet, .rightSet {
 	display: flex;
 	flex-direction: column;
 	width: 50%;
+}
+button.active {
+	border-color: limegreen;
 }

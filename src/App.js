@@ -4,7 +4,6 @@ import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
-
 import store from './store';
 import root from './reducers/root';
 

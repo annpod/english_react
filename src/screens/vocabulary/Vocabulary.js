@@ -1,29 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { VoicePlayer, VoiceRecognition } from 'react-voice-components';
+import Sequence from '../Components/Sequence';
 import { initData } from '../../actions/vocabulary';
 import { randomIntFromInterval } from '../../selectors';
-import {
-  SortableContainer,
-  SortableElement,
-  arrayMove,
-  useDragHandle,
- } from 'react-sortable-hoc';
-
-const SortableItem = SortableElement(({value}) =>
-  <li className="letter-item">{value}</li>
-);
-
-const SortableList = SortableContainer(({items}) => {
-  return (
-    <ul>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
-      ))}
-    </ul>
-  );
-});
-
+import Match from "../Components/Match";
 
 class Vocabulary extends Component {
 
@@ -34,37 +15,26 @@ class Vocabulary extends Component {
 			data: [],
 			playVoice: false,
 			world: "",
+			wordIndex: 0,
 			worldAnswer: "",
+			worldError: false,
 			translation: "",
 			isAnswer: false,
 			isShowAnswer: false,
-			wordDnD: "",
-			wordDnDItems: [],
-      iswordDnDcorrect: false,
-      textVoice: "",
-      leftSet: [],
-      rightSet: [],
-      leftAnswer: "",
-      rightAnswer: "",
+			textVoice: "",
 		};
 
 		this.updateSelect = this.updateSelect.bind(this);
 		this.updateInput = this.updateInput.bind(this);
 		this.newWorld = this.newWorld.bind(this);
+		this.deleteError = this.deleteError.bind(this);
 		this.onEnd = this.onEnd.bind(this);
 		this.onPlay = this.onPlay.bind(this);
 		this.showAnswer = this.showAnswer.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
-		this.newSetPairs = this.newSetPairs.bind(this);
-		this.onSortEnd = this.onSortEnd.bind(this);
-		this.newWorldDnD = this.newWorldDnD.bind(this);
-		this.checkAnswer = this.checkAnswer.bind(this);
-    this.setLeftAnswer = this.setLeftAnswer.bind(this);
-    this.setRightAnswer = this.setRightAnswer.bind(this);
-    this.compareAnswers = this.compareAnswers.bind(this);
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		this.props.initData();
 	}
 
@@ -73,7 +43,8 @@ class Vocabulary extends Component {
 			setName: nextProps.selectSet[0].value,
 			data: nextProps.array[nextProps.selectSet[0].value],
 			world: nextProps.array[nextProps.selectSet[0].value][0].ru,
-			translation: nextProps.array[nextProps.selectSet[0].value][0].en
+			translation: nextProps.array[nextProps.selectSet[0].value][0].en,
+			wordIndex: 1,
 		})
 	}
 
@@ -89,34 +60,44 @@ class Vocabulary extends Component {
 	}
 
 	updateInput(event) {
-		this.setState({ [event.target.name]: event.target.value });
+		this.setState({[event.target.name]: event.target.value});
 	}
+
 	newWorld() {
-		const { worldAnswer, data } = this.state;
-		let length = data.length - 1;
-		let random = randomIntFromInterval(0,length);
+		const { data, wordIndex } = this.state;
+
+		let index = wordIndex >= data.length ? 0 : wordIndex;
 		this.setState({
 			worldAnswer: "",
-			world: data[random].ru,
-			translation: data[random].en,
+			world: data[index].ru,
+			translation: data[index].en,
 			isAnswer: false,
+			wordIndex: index + 1,
 		});
+	}
+
+	deleteError() {
+		this.setState({
+			worldError: false,
+		})
 	}
 
 	onEnd() {
 		this.setState({
-			play: false,
-			playVoice: false,
-			},() => {
-				if (this.state.isAnswer) {this.newWorld()}}
+				play: false,
+				playVoice: false,
+			}, () => {
+				if (this.state.isAnswer) {
+					this.newWorld()
+				}
+			}
 		);
 	}
 
-	onPlay(textVoice) {
+	onPlay() {
 		this.setState({
 			playVoice: true,
 			play: true,
-      textVoice,
 		})
 	}
 
@@ -129,129 +110,75 @@ class Vocabulary extends Component {
 	onSubmit(e) {
 		e.preventDefault();
 		const { translation, worldAnswer } = this.state;
-		if(translation === worldAnswer) {
+		if (translation === worldAnswer) {
 			this.setState({
 				isAnswer: true,
 				isShowAnswer: false,
-			},() => {this.onPlay(translation)})
+			}, () => {
+				this.onPlay();
+				this.newWorld();
+			})
+		} else {
+			this.setState({
+				worldError: true,
+			})
 		}
 	}
 
-	newSetPairs() {
-		const { data } = this.state;
-    const leftSet = data.map((item, index) => (
-      {word: item.en, index}
-    )).sort(function(a,b) {return (a.word > b.word) ? 1 : ((b.word > a.word) ? -1 : 0);});
-    const rightSet = data.map((item, index) => (
-      {word: item.ru, index}
-    )).sort();
-		this.setState({
-			leftSet,
-      rightSet
-		})
-	}
-
-	newWorldDnD() {
-		const { data } = this.state;
-    let length = data.length - 1;
-			let random = randomIntFromInterval(0,length);
-			this.setState({
-				wordDnD: data[random].en,
-				wordDnDItems: data[random].en.split('').sort(),
-			})
-	}
-
-	onSortEnd = ({oldIndex, newIndex}) => {
-     this.setState({
-       wordDnDItems: arrayMove(this.state.wordDnDItems, oldIndex, newIndex),
-     },() => this.checkAnswer());
-   };
-
-	checkAnswer() {
-    if ((this.state.wordDnDItems).join("") === this.state.wordDnD) {
-      this.setState({
-        iswordDnDcorrect: true,
-      },() => {this.onPlay(this.state.wordDnD)})
-    }
-	}
-
-  setLeftAnswer(e) {
-    this.setState({leftAnswer: e.target.value}, () => {this.compareAnswers()})
-  }
-  setRightAnswer(e) {
-    this.setState({rightAnswer: e.target.value}, () => {this.compareAnswers()})
-  }
-  compareAnswers() {
-      if(this.state.leftAnswer === this.state.rightAnswer) {
-        console.log("!!!");
-      }
-  }
-
 
 	render() {
-		const { set, playVoice, world, data, worldAnswer, textVoice, translation, isShowAnswer, pairs, wordDnDItems, iswordDnDcorrect, leftSet, rightSet } = this.state;
+		const { playVoice, world, data, worldAnswer, worldError, translation, isShowAnswer } = this.state;
 		const { selectSet } = this.props;
+
 		return (
 			<div className="page-content">
 				<button id="button-sound" className="button-sound" type="button"></button>
 				<div id="Worlds">
-				<h3>Translate</h3>
-				<h4>Choose the Set</h4>
+					<h3>Translate</h3>
+					<h4>Choose the Set</h4>
 					<select onChange={this.updateSelect}>
-					{selectSet && selectSet.map((item, index) => (
-						<option key={index} value={item.value}>{item.label}</option>
-					))}
+						{selectSet && selectSet.map((item, index) => (
+							<option key={index} value={item.value}>{item.label}</option>
+						))}
 					</select>
 
 					{playVoice &&
 						<VoicePlayer
 							onEnd={this.onEnd}
 							play
-							text={textVoice}
+							text={translation}
 						/>
 					}
 
-					<select  id="language">
+					<select id="language">
 						<option value="ru">Native</option>
 						<option value="en">English</option>
 					</select>
 					<div id="world">{world}</div>
 					<form id="form" onSubmit={this.onSubmit}>
-						<input id="answer" type="text" name="worldAnswer" value={worldAnswer} onChange={this.updateInput}/>
+						<input id="answer" type="text" name="worldAnswer"
+							value={worldAnswer}
+							className={worldError ? "error" : ""}
+							onFocus={this.deleteError}
+							onChange={this.updateInput}/>
 						<div className="answer-result"></div>
 						<button id="button" className="button-check" type="submit"></button>
 						<button id="button-next" className="button-new" type="button" onClick={this.newWorld}></button>
-						<button id="button-speak" className="button-speak" type="button" onClick={this.onPlay}>Speak</button>
+						<button id="button-speak" className="button-speak" type="button" onClick={this.onPlay}>Speak
+						</button>
 					</form>
-					<button id="button-answer" className="answer" type="button" onClick={this.showAnswer}>Show Answer</button>
+					<button id="button-answer" className="answer" type="button" onClick={this.showAnswer}>Show Answer
+					</button>
 					{isShowAnswer &&
 						<span id="right-answer">{translation}</span>
 					}
 
-				<h3>Make up the word</h3>
-				<button id="button-letters" className="button-newset" type="button" onClick={this.newWorldDnD}>New word</button>
-				<button id="button-speak-letters" className="button-speak" type="button">Speak</button>
-				<div id='letters' className={iswordDnDcorrect ? "corret" : ""}>
-					<SortableList items={wordDnDItems} onSortEnd={this.onSortEnd} axis="x" />
-				</div>
-				<h3>Match</h3>
-				<button id="button-pairs" className="button-newset" type="button" onClick={this.newSetPairs}>New Set</button>
+					<h3>Make up the word</h3>
+					<Sequence data={data} />
 
-				<div className="pairs">
-          <div className="leftSet">
-            {leftSet.map((item, index) => (
-                <button key={`${item.word}+${index}`} value={item.index} onClick={this.setLeftAnswer}>{item.word}</button>
-              ))
-            }
-            </div>
-            <div className="rightSet">
-              {rightSet.map((item, index) => (
-                  <button key={`${item.word}+${index}`} value={item.index} onClick={this.setRightAnswer}>{item.word}</button>
-                ))
-              }
-              </div>
+					<Match data={data}/>
+
 				</div>
-			</div>
 			</div>
 		);
 	}
