@@ -45,13 +45,10 @@ class Match extends Component {
 			if(range < data.length) {
 				shortData.push(data[range]);
 				range++;
-			} else if (data.length > 6){
+			} else if (range >= data.length){
 				range = 0;
 			}
 		}
-		this.setState({
-			itemIndex: range,
-		});
 		const leftSet = shortData.map((item, index) => (
 			{word: item.en, index}
 		)).sort(function (a, b) {
@@ -63,7 +60,7 @@ class Match extends Component {
 		this.setState({
 			leftSet,
 			rightSet,
-			itemIndex: 0,
+			itemIndex: range,
 		})
 	}
 

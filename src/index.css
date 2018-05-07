@@ -35,6 +35,7 @@ main {
 	background: url("/images/main-small.png") no-repeat center center rgba(255, 255, 255, 0.95);
 	background-size: auto 100%;
 	min-height: 855px;
+	padding-top: 30px;
 }
 body {
 	background: url('/images/pens.png') repeat-x bottom center #fdefee;

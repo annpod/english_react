@@ -1,7 +1,17 @@
 export const selectValues = [
 	{label: "lessons/урок", value: "lessons"},
   {label: "flat/дім", value: "flat"},
-  {label: "food/їжа", value: "food"}
+  {label: "food/їжа", value: "food"},
+	{label: "numbers/цифри", value: "numbers"},
+	{label: "family/сім'я", value: "family"},
+	{label: "profession/прфесія", value: "profession"},
+	{label: "color/колір", value: "color"},
+	{label: "verb/дієслово", value: "verb"},
+	{label: "body/тіло", value: "body"},
+	{label: "lesson1/урок1", value: "lesson1"},
+	{label: "meal/прийом їжі", value: "meal"},
+	{label: "adverb/прислівник", value: "adverb"},
+
 ]
 
 export const arrays = {
@@ -19,7 +29,7 @@ export const arrays = {
 		{en:"bathroom",ru:"ванна"},
 		{en:"bedroom",ru:"спальня"},
 		{en:"living-room",ru:"зал"}
-	],  
+	],
 	food :[
 		{en:"cucumber",ru:"огірок"},
 		{en:"cabbage",ru:"капуста"},
@@ -37,8 +47,9 @@ export const arrays = {
 		{en:"sausage",ru:"ковбаса/сисиска"},
 		{en:"toast",ru:"тост/грынка"},
 		{en:"jam",ru:"джем/варкння"}
-	]/*,[
-	{en:"one",ru:"один"},
+	],
+	numbers:[
+		{en:"one",ru:"один"},
 		{en:"two",ru:"два"},
 		{en:"three",ru:"три"},
 		{en:"four",ru:"чотири"},
@@ -58,7 +69,8 @@ export const arrays = {
 		{en:"eighteen",ru:"вісімнадцять"},
 		{en:"nineteen",ru:"дев'ятнадцять"},
 		{en:"twenty",ru:"двадцять"},
-	],[
+	],
+	family: [
 		{en:"mother",ru:"мама"},
 		{en:"father",ru:"папа"},
 		{en:"parents",ru:"батьки"},
@@ -72,13 +84,15 @@ export const arrays = {
 		{en:"aunt",ru:"тітка"},
 		{en:"grandmother",ru:"бабуся"},
 		{en:"grandfather",ru:"дідусь"}
-	],[
+	],
+	profession: [
 		{en:"builder",ru:"будівельник"},
 		{en:"teacher",ru:"вчитель"},
 		{en:"doctor",ru:"лікар"},
 		{en:"driver",ru:"водій"},
 		{en:"programmer",ru:"програміст"}
-	],[
+	],
+	color: [
 		{en:"red",ru:"червоний"},
 		{en:"blue",ru:"блакитний"},
 		{en:"white",ru:"білий"},
@@ -88,8 +102,9 @@ export const arrays = {
 		{en:"orange",ru:"помаранчевий"},
 		{en:"yellow",ru:"жовтий"},
 		{en:"pink",ru:"рожевий"},
-	],[
-		/*{en:"look",ru:"дивитись"},
+	],
+	verb: [
+		{en:"look",ru:"дивитись"},
 		{en:"circle",ru:"обводити"},
 		{en:"read",ru:"читати"},
 		{en:"match",ru:"з'єднати"},
@@ -115,8 +130,8 @@ export const arrays = {
 		{en:"drink",ru:"пити"},
 		{en:"cook",ru:"готувати"},
 		{en:"make",ru:"робити/сделать"},
-
-	],[
+	],
+	body: [
 		{en:"eye",ru:"око"},
 		{en:"ear",ru:"вухо"},
 		{en:"arm",ru:"рука"},
@@ -135,7 +150,8 @@ export const arrays = {
 		{en:"knee",ru:"коліно"},
 		{en:"hair",ru:"волосся"},
 		{en:"finger",ru:"палець"}
-	],[
+	],
+	lesson1: [
 		{en:"short",ru:"короткий"},
 		{en:"small",ru:"малий"},
 		{en:"long",ru:"длинний"},
@@ -147,17 +163,21 @@ export const arrays = {
 		{en:"walk",ru:"гуляти"},
 		{en:"run",ru:"бігати"},
 		{en:"jump",ru:"стрибати"},
-	],[
+	],
+	meal: [
 		{en:"breakfast",ru:"сніданок"},
 		{en:"dinner",ru:"обід"},
 		{en:"supper",ru:"вечеря"},
-	],[
+	],
+	adverb: [
 		{en:"usually",ru:"зазвичай"},
 		{en:"always",ru:"завжди"},
 		{en:"sometimes",ru:"іноді"},
-		{en:"never",ru:"ніколи"}
+		{en:"never",ru:"ніколи"},
+		{en:"every day",ru:"щодня"},
+		{en:"every evening",ru:"щоднявечора"},
+
 	]
-*/
 
 }
 
