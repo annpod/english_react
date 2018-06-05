@@ -9,6 +9,7 @@ import root from './reducers/root';
 
 import Vocabulary from './screens/vocabulary/Vocabulary';
 import Family from './screens/Family';
+import AdminPanel from './screens/Admin/AdminPanel';
 
 //const history = syncHistoryWithStore(browserHistory, store);
 
@@ -17,8 +18,9 @@ export default () => (
 	<Provider store={store}>   
 	<Router>
 		<Switch>
-		  <Route exact path='/' component={Vocabulary}/>  
-		  <Route path='/family' component={Family}/>
+			<Route exact path='/' component={Vocabulary}/>
+			<Route path='/family' component={Family}/>
+			<Route path='/admin' component={AdminPanel}/>
 		</Switch>  
 		</Router> 
   	</Provider>
