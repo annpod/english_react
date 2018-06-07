@@ -51,3 +51,14 @@ li.letter-item{
   border: 1px solid transparent;
 	background: transparent;
 }
+.button-image {
+	border: none;
+	background: transparent;
+	height: 30px;
+	width: 30px;
+	color: transparent;
+}
+.button-image_delete {
+	background: url(./images/cross.png) no-repeat center center;
+	background-size: cover;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { randomIntFromInterval } from '../../selectors';
+import { initData } from '../../actions/vocabulary';
 
 class Words extends Component {
 
@@ -9,22 +9,20 @@ class Words extends Component {
 		this.state = {
 			setName: "",
 			data: [],
-			playVoice: false,
-			world: "",
-			wordIndex: 0,
-			worldAnswer: "",
-			worldError: false,
-			translation: "",
-			isAnswer: false,
-			isShowAnswer: false,
-			textVoice: "",
+			en: "",
+			ru: "",
+			editEn: "",
+			editRu: "",
+			isEdit: false,
+			indexEdit: "",
 		};
 
 		this.updateSelect = this.updateSelect.bind(this);
 		this.updateInput = this.updateInput.bind(this);
-		this.addWorld = this.newWorld.bind(this);
-		this.deleteWord = this.deleteError.bind(this);
-		this.onSubmit = this.onSubmit.bind(this);
+		this.addWord = this.addWord.bind(this);
+		this.editWord = this.editWord.bind(this);
+		this.deleteWord = this.deleteWord.bind(this);
+		this.saveWord = this.saveWord.bind(this);
 	}
 
 	componentDidMount() {
@@ -43,9 +41,8 @@ class Words extends Component {
 
 	updateSelect(event) {
 		const { array } = this.props;
-		const { data } = this.state;
 		this.setState({
-			set: event.target.value,
+			setName: event.target.value,
 			data: array[event.target.value],
 			world: array[event.target.value][0].ru,
 			translation: array[event.target.value][0].en
@@ -56,58 +53,92 @@ class Words extends Component {
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	addWorld() {
-		const { data, wordIndex } = this.state;
+	addWord() {
+		const { en, ru, setName } = this.state;
+		console.log("1111",en, ru, setName);
+	}
 
-		let index = wordIndex >= data.length ? 0 : wordIndex;
+	editWord(index){
+
+		const { array } = this.props;
+		const { setName } = this.state;
+		console.log("edit", array[setName][index].en);
 		this.setState({
-			worldAnswer: "",
-			world: data[index].ru,
-			translation: data[index].en,
-			isAnswer: false,
-			wordIndex: index + 1,
-		});
+			isEdit: true,
+			indexEdit: index,
+			editEn: array[setName][index].en,
+			editRu: array[setName][index].ru,
+		})
 	}
 
-	deleteWorld() {
-		const { data, wordIndex } = this.state;
+	deleteWord() {
 
-		let index = wordIndex >= data.length ? 0 : wordIndex;
+	}
+
+	saveWord() {
 		this.setState({
-			worldAnswer: "",
-			world: data[index].ru,
-			translation: data[index].en,
-			isAnswer: false,
-			wordIndex: index + 1,
-		});
+			isEdit: false,
+			indexEdit: "",
+			editEn: "",
+			editRu: "",
+		})
 	}
-
-	onSubmit(e) {
-		e.preventDefault();
-		const { translation, worldAnswer } = this.state;
-		if (translation === worldAnswer) {
-			this.setState({
-				isAnswer: true,
-				isShowAnswer: false,
-			}, () => {
-				this.onPlay();
-				this.newWorld();
-			})
-		} else {
-			this.setState({
-				worldError: true,
-			})
-		}
-	}
-
 
 	render() {
-		const { playVoice, world, data, worldAnswer, worldError, translation, isShowAnswer } = this.state;
-		const { selectSet } = this.props;
-
+		const { en, ru, editEn, editRu, setName, isEdit, indexEdit } = this.state;
+		const { selectSet, array } = this.props;
+		console.log("data", array[setName]);
 		return (
-			<div className="page-content">
-				
+			<div>
+				<select onChange={this.updateSelect}>
+					{selectSet && selectSet.map((item, index) => (
+						<option key={index} value={item.value}>{item.label}</option>
+					))}
+				</select>
+				<table>
+					<thead>
+						<tr>
+							<th>English</th>
+							<th>Native</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td><input name="en" value={en} onChange={this.updateInput}/></td>
+						<td><input name="ru" value={ru} onChange={this.updateInput}/></td>
+						<td>
+							<button className="button-image button-image_save" onClick={this.addWord}>Save</button>
+						</td>
+					</tr>
+					{array[setName] && array[setName].map((item, index) => (
+						<tr key={`${index}0`}>
+							<td key={`${index}1`}>
+								{isEdit && index === indexEdit ?
+									<input name="editEn" value={editEn} onChange={this.updateInput}/>
+									:
+									<span>{item.en}</span>
+								}
+								</td>
+							<td key={`${index}2`}>
+								{isEdit && index === indexEdit ?
+									<input name="editRu" value={editRu} onChange={this.updateInput}/>
+									:
+									<span>{item.ru}</span>
+								}
+								</td>
+							<td>
+								{isEdit && index === indexEdit ?
+									<button className="button-image button-image_save" onClick={this.saveWord}>Save</button>
+									:
+									<button onClick={() => this.editWord(index)}
+											className="button-image button-image_edit">Edit</button>
+								}
+								<button className="button-image button-image_delete">Delete</button>
+							</td>
+						</tr>
+					))}
+					</tbody>
+				</table>
 			</div>
 		);
 	}

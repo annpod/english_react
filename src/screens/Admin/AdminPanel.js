@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Words from './Words';
 
 class AdminPanel extends Component {
 
@@ -15,7 +16,7 @@ class AdminPanel extends Component {
 
 		return (
 			<div className="page-content">
-				Admin
+				<Words />
 			</div>
 		);
 	}
