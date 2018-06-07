@@ -56,7 +56,16 @@ class Words extends Component {
 	addWord() {
 		const { en, ru, setName } = this.state;
 		console.log("1111",en, ru, setName);
-	}
+		fetch('http://localhost:3012/vocabulary', {
+		  method: 'post',
+		  headers: {
+		    'Accept': 'application/json, text/plain, */*',
+		    'Content-Type': 'application/json'
+	  },
+	  body: JSON.stringify({en, ru})
+		}).then(res=>res.json())
+		  .then(res => console.log(res));
+		}
 
 	editWord(index){
 

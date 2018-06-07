@@ -71,7 +71,7 @@ app.delete('/artists/:id', function (req, res) {
 
 
 
-db.connect("mongodb://localhost:27017/myapi", function(err) {
+db.connect("mongodb://localhost:27017/myapi", function(err, database) {
 	if (err) {
 		return console.log(err);
 	}

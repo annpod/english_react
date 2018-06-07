@@ -12,10 +12,11 @@ exports.connect = function(url, done) {
 		if(err) {
 			return done(err);
 		}
-		state.db = db;
+		state.db = db.db('myapi');
 		done();
 	})
 };
+
 exports.get = function () {
 	return state.db;
 };
