@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initData } from '../../actions/vocabulary';
+import { addWord, getWordList, updateData } from '../../actions/vocabulary';
+import { groupBy, groupSelect } from '../../selectors';
 
 class Words extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			setName: "",
+			setTitle: "",
 			data: [],
 			en: "",
 			ru: "",
@@ -23,29 +25,32 @@ class Words extends Component {
 		this.editWord = this.editWord.bind(this);
 		this.deleteWord = this.deleteWord.bind(this);
 		this.saveWord = this.saveWord.bind(this);
+		this.getData = this.getData.bind(this);
+		this.saveEditWord = this.saveEditWord.bind(this);
 	}
 
 	componentDidMount() {
-		this.props.initData();
+		this.getData();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	async getData() {
+		await this.props.getWordList();
+		const { selectSet, array } = this.props;
 		this.setState({
-			setName: nextProps.selectSet[0].value,
-			data: nextProps.array[nextProps.selectSet[0].value],
-			world: nextProps.array[nextProps.selectSet[0].value][0].ru,
-			translation: nextProps.array[nextProps.selectSet[0].value][0].en,
-			wordIndex: 1,
+			set: selectSet[0].value,
+			setTitle: selectSet[0].label,
+			data: array[selectSet[0].value],
 		})
 	}
 
 	updateSelect(event) {
 		const { array } = this.props;
+		var index = event.nativeEvent.target.selectedIndex;
+
 		this.setState({
-			setName: event.target.value,
+			set: event.target.value,
+			setTitle: event.nativeEvent.target[index].text,
 			data: array[event.target.value],
-			world: array[event.target.value][0].ru,
-			translation: array[event.target.value][0].en
 		});
 	}
 
@@ -53,35 +58,47 @@ class Words extends Component {
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	addWord() {
-		const { en, ru, setName } = this.state;
-		console.log("1111",en, ru, setName);
-		fetch('http://localhost:3012/vocabulary', {
-		  method: 'post',
-		  headers: {
-		    'Accept': 'application/json, text/plain, */*',
-		    'Content-Type': 'application/json'
-	  },
-	  body: JSON.stringify({en, ru})
-		}).then(res=>res.json())
-		  .then(res => console.log(res));
-		}
+	async addWord() {
+		const { en, ru, set, setTitle } = this.state;
+		console.log("1111",en, ru, set, setTitle);
+		const body = {en, ru, set, setTitle};
+		await this.props.addWord(body);
+		this.getData();
+		this.setState({
+			en: "",
+			ru: "",
+		})
+	}
 
 	editWord(index){
-
 		const { array } = this.props;
-		const { setName } = this.state;
-		console.log("edit", array[setName][index].en);
+		const { setTitle, set, data } = this.state;
+		console.log("edit", data[index].en);
 		this.setState({
 			isEdit: true,
+			id: data[index]._id,
 			indexEdit: index,
-			editEn: array[setName][index].en,
-			editRu: array[setName][index].ru,
+			editEn: data[index].en,
+			editRu: data[index].ru,
+		})	
+	}
+
+	async saveEditWord() {
+		const { id, editEn, editRu, setTitle, set } = this.state;
+		const body = {en: editEn, ru: editRu, set, setTitle};
+		await this.props.updateData(id, body);
+		this.getData();
+		this.setState({
+			isEdit: false,
+			id: "",
+			indexEdit: "",
+			editEn: "",
+			editRu: "",
 		})
 	}
 
 	deleteWord() {
-
+		console.log("delete");
 	}
 
 	saveWord() {
@@ -93,10 +110,13 @@ class Words extends Component {
 		})
 	}
 
+
 	render() {
-		const { en, ru, editEn, editRu, setName, isEdit, indexEdit } = this.state;
+		console.log(this.props.array);
+		console.log(this.props.selectSet);
+		const { en, ru, editEn, editRu, setTitle, isEdit, indexEdit, data } = this.state;
 		const { selectSet, array } = this.props;
-		console.log("data", array[setName]);
+		console.log("data", array[setTitle]);
 		return (
 			<div>
 				<select onChange={this.updateSelect}>
@@ -119,7 +139,7 @@ class Words extends Component {
 							<button className="button-image button-image_save" onClick={this.addWord}>Save</button>
 						</td>
 					</tr>
-					{array[setName] && array[setName].map((item, index) => (
+					{data.map((item, index) => (
 						<tr key={`${index}0`}>
 							<td key={`${index}1`}>
 								{isEdit && index === indexEdit ?
@@ -137,7 +157,7 @@ class Words extends Component {
 								</td>
 							<td>
 								{isEdit && index === indexEdit ?
-									<button className="button-image button-image_save" onClick={this.saveWord}>Save</button>
+									<button className="button-image button-image_save" onClick={this.saveEditWord}>Save</button>
 									:
 									<button onClick={() => this.editWord(index)}
 											className="button-image button-image_edit">Edit</button>
@@ -154,12 +174,15 @@ class Words extends Component {
 }
 
 const mapStateToProps = state => ({
-	selectSet: state.vocabulary.selectValues,
-	array: state.vocabulary.arrays,
+	selectSet: groupSelect(state),
+	array: groupBy(state),
 });
 
 const mapDispatchToProps = {
-	initData
+	initData,
+	addWord,
+	getWordList,
+	updateData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Words);

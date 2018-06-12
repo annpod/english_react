@@ -5,7 +5,15 @@ var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var artistsController = require('./controllers/artists');
 var vocabularyController = require('./controllers/vocabulary');
+const cors = require('cors');
 var app = express();
+
+app.use(cors({ origin: true, credentials: true }));
+app.use((req, res, next) => {
+	res.setHeader('Expires', '-1');
+	res.setHeader('Cache-Control', 'no-cache');
+	next();
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

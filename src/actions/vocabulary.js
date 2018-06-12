@@ -1,19 +1,78 @@
-import {INIT_DATA} from '../actions/index';
+import {
+	addWord as addWordApi,
+	getWordList as getWordListApi,
+	updatWord as updatWordApi,
+} from '../api/api';
+import {
+	ADD_WORD_START,
+	ADD_WORD_SUCCESS,
+	ADD_WORD_FAILURE,
+	UPDATE_WORD_START,
+	UPDATE_WORD_SUCCESS,
+	UPDATE_WORD_FAILURE,
+	DELETE_WORD_START,
+	DELETE_WORD_SUCCESS,
+	DELETE_WORD_FAILURE,
+	GET_WORD_LIST_START,
+	GET_WORD_LIST_SUCCESS,
+	GET_WORD_LIST_FAILURE,
+} from './index';
 
-export const initData = () => {
-	return { type: INIT_DATA };
+
+export const addWord = (body) => async (dispatch) => {
+	console.log("addWord", body);
+	dispatch({ type: ADD_WORD_START });
+	try {
+		const wordList = await addWordApi(body);
+		dispatch({
+			type: ADD_WORD_SUCCESS,
+			payload: wordList,
+		});
+	} catch (err) {
+		dispatch({
+			type: ADD_WORD_FAILURE,
+			payload: err,
+			error: true,
+		});
+	}
 };
-export const getMainRecipe = (active) => {
-	return { type: GET_MAIN_RECIPE, payload: active };
+
+export const getWordList = () => async (dispatch) => {
+	console.log("getWoldList");
+	dispatch({ type: GET_WORD_LIST_START });
+	try {
+		const wordList = await getWordListApi();
+		dispatch({
+			type: GET_WORD_LIST_SUCCESS,
+			payload: wordList,
+		});
+	} catch (err) {
+		dispatch({
+			type: GET_WORD_LIST_FAILURE,
+			payload: err,
+			error: true,
+		});
+	}
 };
-export const saveFilter = (filter) => {
-	return { type: SAVE_FILTER, payload: filter };
+
+export const updateData = (id, body) => async (dispatch) => {
+	console.log("updateData");
+	dispatch({ type: UPDATE_WORD_START });
+	try {
+		const word = await updatWordApi(id, body);
+		dispatch({
+			type: UPDATE_WORD_SUCCESS,
+			payload: word,
+		});
+	} catch (err) {
+		dispatch({
+			type: UPDATE_WORD_FAILURE,
+			payload: err,
+			error: true,
+		});
+	}
 };
-export const deleteItem = (item) => {
-	return { type: DELETE_ITEM, payload: item };
-};
-export const addItem = (item) => {
-	return { type: ADD_ITEM, payload: item };
-};
+
+
 
 

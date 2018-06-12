@@ -1,4 +1,5 @@
 var Vocabulary = require('../models/vocabulary');
+var uniqid = require('uniqid');
 
 exports.all = function (req, res) {
 	Vocabulary.all(function (err, docs) {
