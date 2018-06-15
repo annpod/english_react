@@ -51,6 +51,17 @@ export const updatWord = (id, body) => {
 	.catch(error => Promise.reject(error));
 };
 
+export const deleteWord = (id) => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/vocabulary/${id}`,{
+		headers: headers,
+		method: "DELETE"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};
 
 /*
 

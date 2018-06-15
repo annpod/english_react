@@ -25,7 +25,8 @@ exports.create = function (req, res) {
 	var word = {
 		en: req.body.en,
 		ru: req.body.ru,
-		set: req.body.set
+		set: req.body.set,
+		setTitle: req.body.setTitle
 	};
 	Vocabulary.create(word, function (err, result) {
 		if (err) {
@@ -40,7 +41,8 @@ exports.update = function (req, res) {
 	var word = {
 		en: req.body.en,
 		ru: req.body.ru,
-		set: req.body.set
+		set: req.body.set,
+		setTitle: req.body.setTitle
 	};
 	Vocabulary.update(req.params.id, word, function (err, result) {
 		if (err) {

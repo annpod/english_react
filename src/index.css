@@ -1011,3 +1011,7 @@ button.active {
 	background: url(/images/check_g.png) no-repeat center center;
 	background-size: 30px auto;
 }
+.button-image_add {
+	background: url(/images/add_icon.png) no-repeat center center;
+	background-size: auto 100%;
+}

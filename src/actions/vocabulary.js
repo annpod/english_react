@@ -73,6 +73,24 @@ export const updateData = (id, body) => async (dispatch) => {
 	}
 };
 
+export const deleteData = (id, body) => async (dispatch) => {
+	console.log("updateData");
+	dispatch({ type: DELETE_WORD_START });
+	try {
+		const word = await updatWordApi(id, body);
+		dispatch({
+			type: DELETE_WORD_SUCCESS,
+			payload: word,
+		});
+	} catch (err) {
+		dispatch({
+			type: DELETE_WORD_FAILURE,
+			payload: err,
+			error: true,
+		});
+	}
+};
+
 
 
 

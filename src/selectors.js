@@ -27,5 +27,6 @@ export const groupSelect = (state) => {
 	Object.keys(currentProps).forEach(key => {
 		value.push({value: key, label: currentProps[key][0].setTitle})
 	});
+	console.log("value", value);
 	return value;
 };

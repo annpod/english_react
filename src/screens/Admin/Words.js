@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { initData } from '../../actions/vocabulary';
-import { addWord, getWordList, updateData } from '../../actions/vocabulary';
+import {
+	addWord,
+	getWordList,
+	updateData,
+	deleteData,
+} from '../../actions/vocabulary';
 import { groupBy, groupSelect } from '../../selectors';
 
 class Words extends Component {
@@ -9,6 +14,7 @@ class Words extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			set: "",
 			setTitle: "",
 			data: [],
 			en: "",
@@ -17,6 +23,7 @@ class Words extends Component {
 			editRu: "",
 			isEdit: false,
 			indexEdit: "",
+			isNewCategory: false,
 		};
 
 		this.updateSelect = this.updateSelect.bind(this);
@@ -27,6 +34,9 @@ class Words extends Component {
 		this.saveWord = this.saveWord.bind(this);
 		this.getData = this.getData.bind(this);
 		this.saveEditWord = this.saveEditWord.bind(this);
+		this.addCategory = this.addCategory.bind(this);
+		this.showCategory = this.showCategory.bind(this);
+
 	}
 
 	componentDidMount() {
@@ -36,16 +46,18 @@ class Words extends Component {
 	async getData() {
 		await this.props.getWordList();
 		const { selectSet, array } = this.props;
+
 		this.setState({
-			set: selectSet[0].value,
-			setTitle: selectSet[0].label,
-			data: array[selectSet[0].value],
+			isNewCategory: !selectSet.length,
+			set: selectSet[0].value || "",
+			setTitle: selectSet[0].label || "",
+			data: array[selectSet[0].value] || [],
 		})
 	}
 
 	updateSelect(event) {
 		const { array } = this.props;
-		var index = event.nativeEvent.target.selectedIndex;
+		const index = event.nativeEvent.target.selectedIndex;
 
 		this.setState({
 			set: event.target.value,
@@ -71,9 +83,7 @@ class Words extends Component {
 	}
 
 	editWord(index){
-		const { array } = this.props;
-		const { setTitle, set, data } = this.state;
-		console.log("edit", data[index].en);
+		const { data } = this.state;
 		this.setState({
 			isEdit: true,
 			id: data[index]._id,
@@ -97,8 +107,10 @@ class Words extends Component {
 		})
 	}
 
-	deleteWord() {
+	async deleteWord() {
 		console.log("delete");
+		await this.props.deleteData(id);
+		this.getData();
 	}
 
 	saveWord() {
@@ -110,20 +122,47 @@ class Words extends Component {
 		})
 	}
 
+	addCategory() {
+		this.setState({
+			data: [],
+			isNewCategory: true,
+		});
+	}
+
+	showCategory() {
+		const { id, editEn, editRu, setTitle, set } = this.state;
+		this.setState({
+			data: this.props.array[setTitle],
+			isNewCategory: false,
+		});
+	}
+
 
 	render() {
 		console.log(this.props.array);
 		console.log(this.props.selectSet);
-		const { en, ru, editEn, editRu, setTitle, isEdit, indexEdit, data } = this.state;
+		const { en, ru, editEn, editRu, set, setTitle, isEdit, indexEdit, data, isNewCategory } = this.state;
 		const { selectSet, array } = this.props;
-		console.log("data", array[setTitle]);
+		console.log("data", data);
 		return (
 			<div>
-				<select onChange={this.updateSelect}>
-					{selectSet && selectSet.map((item, index) => (
-						<option key={index} value={item.value}>{item.label}</option>
-					))}
-				</select>
+				{isNewCategory ?
+					<span>
+						<input name="set" value={set} onChange={this.updateInput} />
+						<input name="setTitle" value={setTitle} onChange={this.updateInput} />
+						<button className="button-image button-image_add" onClick={this.showCategory}>Add</button>
+					</span>
+					:
+					<span>
+						<select onChange={this.updateSelect}>
+						{selectSet && selectSet.map((item, index) => (
+							<option key={index} value={item.value}>{item.label}</option>
+						))}
+						</select>
+						<button className="button-image button-image_add" onClick={this.addCategory}>Add</button>
+					</span>
+				}
+
 				<table>
 					<thead>
 						<tr>
@@ -139,7 +178,7 @@ class Words extends Component {
 							<button className="button-image button-image_save" onClick={this.addWord}>Save</button>
 						</td>
 					</tr>
-					{data.map((item, index) => (
+					{data && data.length > 0 && data.map((item, index) => (
 						<tr key={`${index}0`}>
 							<td key={`${index}1`}>
 								{isEdit && index === indexEdit ?
@@ -159,10 +198,9 @@ class Words extends Component {
 								{isEdit && index === indexEdit ?
 									<button className="button-image button-image_save" onClick={this.saveEditWord}>Save</button>
 									:
-									<button onClick={() => this.editWord(index)}
-											className="button-image button-image_edit">Edit</button>
+									<button onClick={() => this.editWord(index)} className="button-image button-image_edit">Edit</button>
 								}
-								<button className="button-image button-image_delete">Delete</button>
+								<button onClick={() => this.deleteWord(index)} className="button-image button-image_delete">Delete</button>
 							</td>
 						</tr>
 					))}
@@ -183,6 +221,7 @@ const mapDispatchToProps = {
 	addWord,
 	getWordList,
 	updateData,
+	deleteData,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Words);
