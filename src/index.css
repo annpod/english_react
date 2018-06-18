@@ -995,23 +995,51 @@ button.active {
 .button-image {
 	border: none;
 	background: transparent;
-	height: 30px;
-	width: 30px;
-	color: transparent;
+	height: 40px;
+	width: 40px;
+	min-width: 40px;
+	border-radius: 20px;
+	font-size: 20px;
+	color: #fff;
 }
 .button-image_delete {
-	background: url(/images/cross.png) no-repeat center center;
-	background-size: 30px auto;
+	background: #cc0016;
 }
 .button-image_edit {
-	background: url(/images/edit.png) no-repeat center center;
-	background-size: 30px auto;
+	background: #018909;
+
 }
 .button-image_save {
-	background: url(/images/check_g.png) no-repeat center center;
-	background-size: 30px auto;
+	background: #018909;
 }
 .button-image_add {
-	background: url(/images/add_icon.png) no-repeat center center;
-	background-size: auto 100%;
+	background: #0654cc;
+}
+.button-image_back {
+	background: #0654cc;
+}
+.button-image_cancel {
+	background: #cc0016;
+}
+.table-vocabulary {
+	margin-top: 30px;
+}
+.select-category{
+	width: 150px;
+	height: 25px;
+	line-height: 15px;
+	padding: 3px 1px;
+	margin-right: 10px;
+	margin-left: 10px;
+}
+.input-edit,
+.input-category{
+	width: 180px;
+	height: 25px;
+	line-height: 15px;
+	padding: 5px 4px;
+	margin-right: 10px;
+}
+.table-text {
+	padding-left: 8px;
 }

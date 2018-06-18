@@ -23,10 +23,9 @@ exports.findById = function (req, res) {
 
 exports.create = function (req, res) {
 	var word = {
-		en: req.body.en,
-		ru: req.body.ru,
-		set: req.body.set,
-		setTitle: req.body.setTitle
+		word: req.body.word,
+		translation: req.body.translation,
+		category: req.body.category
 	};
 	Vocabulary.create(word, function (err, result) {
 		if (err) {
@@ -39,10 +38,9 @@ exports.create = function (req, res) {
 
 exports.update = function (req, res) {
 	var word = {
-		en: req.body.en,
-		ru: req.body.ru,
-		set: req.body.set,
-		setTitle: req.body.setTitle
+		word: req.body.word,
+		translation: req.body.translation,
+		category: req.body.category
 	};
 	Vocabulary.update(req.params.id, word, function (err, result) {
 		if (err) {

@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 var db = require('./db');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
-var artistsController = require('./controllers/artists');
 var vocabularyController = require('./controllers/vocabulary');
 const cors = require('cors');
 var app = express();
@@ -20,14 +19,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.get('/', function (req, res) {
-	res.send('Hello!');
-});
+	res.send('Hello!');});
 
-app.get('/artists', artistsController.all);
-app.get('/artists/:id', artistsController.findById);
-app.post('/artists', artistsController.create);
-app.put('/artists/:id', artistsController.update);
-app.delete('/artists/:id', artistsController.delete);
 
 app.get('/vocabulary', vocabularyController.all);
 app.get('/vocabulary/:id', vocabularyController.findById);

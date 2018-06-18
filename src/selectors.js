@@ -14,7 +14,7 @@ export const sortArrayofObj = function (a,b) {
 export const groupBy = (state) => {
 	const currentProps = state.vocabulary.vocabulary;
 	return currentProps.reduce((groups, item) => {
-		const val = item['set'];
+		const val = item['category'];
 		groups[val] = groups[val] || [];
 		groups[val].push(item);
 		return groups;
@@ -25,8 +25,7 @@ export const groupSelect = (state) => {
 	const currentProps = groupBy(state);
 	let value = [];
 	Object.keys(currentProps).forEach(key => {
-		value.push({value: key, label: currentProps[key][0].setTitle})
+		value.push({value: key})
 	});
-	console.log("value", value);
 	return value;
 };
