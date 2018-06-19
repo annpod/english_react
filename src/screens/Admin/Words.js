@@ -6,6 +6,7 @@ import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
 import createClass from 'create-react-class';
 import Select from 'react-select';
+//import ListItem from './components/ListItem';
 
 import {
 	addWord,
@@ -202,6 +203,18 @@ class Words extends Component {
 						</td>
 					</tr>
 					{data && data.length > 0 && data.map((item, index) => (
+						<div>
+						{/*
+						<ListItem 
+							item={item}
+							updateInput={this.updateInput}
+							cancelEditWord={this.cancelEditWord}
+							editWord={this.editWord}
+							deleteWord={this.deleteWord}
+
+						/>
+*/}
+
 						<tr key={`${index}0`}>
 							<td key={`${index}1`}>
 								{isEdit && index === indexEdit ?
@@ -229,7 +242,8 @@ class Words extends Component {
 									</span>
 									:
 									<span>
-										<button onClick={() => this.editWord(index)} className="button-image button-image_edit">
+										<button onClick={() => this.editWord
+											(index)} className="button-image button-image_edit">
 											<FontAwesomeIcon icon={faPencilAlt} />
 										</button>
 										<button onClick={() => this.deleteWord(index)} className="button-image button-image_delete">
@@ -240,6 +254,7 @@ class Words extends Component {
 
 							</td>
 						</tr>
+						</div>
 					))}
 					</tbody>
 				</table>
