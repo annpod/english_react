@@ -4,13 +4,22 @@ import { initData } from '../../actions/vocabulary';
 import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
+import createClass from 'create-react-class';
+import Select from 'react-select';
+
 import {
 	addWord,
 	getWordList,
 	updateData,
 	deleteData,
+	categoryList,
 } from '../../actions/vocabulary';
-import { groupBy, groupSelect } from '../../selectors';
+
+import {
+	groupSelect,
+	filterData,
+	getList
+} from '../../selectors';
 
 class Words extends Component {
 
@@ -18,17 +27,17 @@ class Words extends Component {
 		super(props);
 		this.state = {
 			category: "",
-			data: [],
 			word: "",
 			translation: "",
 			editWord: "",
 			editTranslation: "",
 			isEdit: false,
 			indexEdit: "",
-			isNewCategory: false,
+			multi: true,
+			multiValue: [],
+			value: []
 		};
 
-		this.updateSelect = this.updateSelect.bind(this);
 		this.updateInput = this.updateInput.bind(this);
 		this.addWord = this.addWord.bind(this);
 		this.editWord = this.editWord.bind(this);
@@ -37,8 +46,8 @@ class Words extends Component {
 		this.getData = this.getData.bind(this);
 		this.saveEditWord = this.saveEditWord.bind(this);
 		this.addCategory = this.addCategory.bind(this);
-		this.showCategory = this.showCategory.bind(this);
 		this.cancelEditWord = this.cancelEditWord.bind(this);
+		this.handleOnChange = this.handleOnChange.bind(this);
 
 	}
 
@@ -48,23 +57,6 @@ class Words extends Component {
 
 	async getData() {
 		await this.props.getWordList();
-		const { selectSet, array } = this.props;
-console.log("selectSet",selectSet);
-		this.setState({
-			isNewCategory: !selectSet.length,
-			category: selectSet.length && selectSet[0].value || "",
-			data: selectSet.length && array[selectSet[0].value] || [],
-		})
-	}
-
-	updateSelect(event) {
-		const { array } = this.props;
-		const index = event.nativeEvent.target.selectedIndex;
-
-		this.setState({
-			category: event.target.value,
-			data: array[event.target.value],
-		});
 	}
 
 	updateInput(event) {
@@ -72,12 +64,16 @@ console.log("selectSet",selectSet);
 	}
 
 	async addWord() {
-		const { word, translation, category, isNewCategory } = this.state;
+		const { word, translation, multi, multiValue, value } = this.state;
+		let categoryVar = multi ? multiValue : value;
+		const categoryArray = [];
+		for (let category of categoryVar) {
+			categoryArray.push(category.value);
+		}
 		const wordVar = word.trim();
 		const translationVar = translation.trim();
-		const categoryVar = isNewCategory ? category.trim() : category;
-		if (wordVar && translationVar && categoryVar){
-			const body = {word: wordVar, translation: translationVar, category: categoryVar};
+		if (wordVar && translationVar && categoryArray.length){
+			const body = {word: wordVar, translation: translationVar, category: categoryArray};
 			await this.props.addWord(body);
 			this.getData();
 			this.setState({
@@ -88,16 +84,20 @@ console.log("selectSet",selectSet);
 	}
 
 	editWord(index){
-		console.log("index", index);
-		const { data } = this.state;
+		const { data } = this.props;
+		const options =[];
+		data[index].category.forEach((item) => {options.push({ value: item, label: item })});
+		this.handleOnChange(options);
 		this.setState({
 			isEdit: true,
 			id: data[index]._id,
 			indexEdit: index,
 			editWord: data[index].word,
 			editTranslation: data[index].translation,
-		})	
+			multiValue: options,
+		});
 	}
+
 	cancelEditWord(index){
 		this.setState({
 			isEdit: false,
@@ -109,21 +109,30 @@ console.log("selectSet",selectSet);
 	}
 
 	async saveEditWord() {
-		const { id, editWord, editTranslation, category } = this.state;
-		const body = {word: editWord, translation: editTranslation, category};
-		await this.props.updateData(id, body);
-		this.getData();
-		this.setState({
-			isEdit: false,
-			id: "",
-			indexEdit: "",
-			editWord: "",
-			editTranslation: "",
-		})
+		const { id, editWord, editTranslation, multiValue } = this.state;
+		let categoryVar = multiValue;
+		const categoryArray = [];
+		for (let category of categoryVar) {
+			categoryArray.push(category.value);
+		}
+		const wordVar = editWord.trim();
+		const translationVar = editTranslation.trim();
+		if (wordVar && translationVar && categoryArray.length) {
+			const body = {word: editWord, translation: editTranslation, category: categoryArray};
+			await this.props.updateData(id, body);
+			this.getData();
+			this.setState({
+				isEdit: false,
+				id: "",
+				indexEdit: "",
+				editWord: "",
+				editTranslation: "",
+			})
+		}
 	}
 
 	async deleteWord(index) {
-		const id = this.state.data[index]._id;
+		const id = this.props.data[index]._id;
 		await this.props.deleteData(id);
 		this.getData();
 	}
@@ -144,43 +153,36 @@ console.log("selectSet",selectSet);
 		});
 	}
 
-	showCategory() {
-		const { set } = this.state;
-		const { array } = this.props;
-		this.setState({
-			data: array[set],
-			isNewCategory: false,
-		});
+	handleOnChange (value) {
+		const { multi } = this.state;
+		if (multi) {
+			this.setState({ multiValue: value });
+		} else {
+			this.setState({ value });
+		}
+		const categoryArray = [];
+		for (let category of value) {
+			categoryArray.push(category.value);
+		}
+		this.props.categoryList(categoryArray);
 	}
 
 
 	render() {
-		const { word, translation, editWord, editTranslation, category, isEdit, indexEdit, data, isNewCategory } = this.state;
-		const { selectSet, array } = this.props;
-		console.log("indexEdit", indexEdit);
+		const { word, translation, editWord, editTranslation, isEdit, indexEdit, multi, multiValue, value } = this.state;
+		const { selectSet, data } = this.props;
+		console.log("data", data);
 		return (
 			<div>
-				{isNewCategory || !selectSet.length ?
-					<span>
-						<label>Category</label>
-						<input name="category" className="input-category"  value={category} onChange={this.updateInput} />
-						<button className="button-image button-image_back" onClick={this.showCategory}>
-							<FontAwesomeIcon icon="chevron-left" />
-						</button>
-					</span>
-					:
-					<span>
-						<label>Category</label>
-						<select className="select-category" onChange={this.updateSelect}>
-						{selectSet && selectSet.map((item, index) => (
-							<option key={index} value={item.value}>{item.value}</option>
-						))}
-						</select>
-						<button className="button-image button-image_add" onClick={this.addCategory}>
-							<FontAwesomeIcon icon={faPlus} />
-						</button>
-					</span>
-				}
+				<span>
+					<label>Category</label>
+					<Select.Creatable
+						multi={multi}
+						options={selectSet}
+						onChange={this.handleOnChange}
+						value={multi ? multiValue : value}
+					/>
+				</span>
 
 				<table className="table-vocabulary">
 					<thead>
@@ -246,9 +248,9 @@ console.log("selectSet",selectSet);
 	}
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
 	selectSet: groupSelect(state),
-	array: groupBy(state),
+	data : getList(state),
 });
 
 const mapDispatchToProps = {
@@ -257,6 +259,8 @@ const mapDispatchToProps = {
 	getWordList,
 	updateData,
 	deleteData,
+	getList,
+	categoryList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Words);

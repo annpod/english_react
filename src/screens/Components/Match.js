@@ -50,12 +50,12 @@ class Match extends Component {
 			}
 		}
 		const leftSet = shortData.map((item, index) => (
-			{word: item.en, index}
+			{word: item.word, index}
 		)).sort(function (a, b) {
 			return (a.word > b.word) ? 1 : ((b.word > a.word) ? -1 : 0);
 		});
 		const rightSet = shortData.map((item, index) => (
-			{word: item.ru, index}
+			{word: item.translation, index}
 		)).sort();
 		this.setState({
 			leftSet,

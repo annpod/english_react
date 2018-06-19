@@ -6,8 +6,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
 	entry: {
-		app: path.join(__dirname, './src/index.js'),
-		style: path.join(__dirname, './src/index.css')
+		app: path.join(__dirname, './src/index.js')
 	},
 	output: {
 		filename: '[name].[hash].js',
@@ -30,10 +29,7 @@ module.exports = {
 
 			{
 				test: /\.css$/,
-				use: ExtractTextPlugin.extract({
-					fallback: "style-loader",
-					use: "css-loader"
-				})
+				use: [ 'style-loader', 'css-loader' ]
 			}
 		]
 	},
@@ -42,7 +38,6 @@ module.exports = {
 			template: path.join(__dirname, 'public/index.html'),
 			filename: 'index.html'
 		}),
-		new ExtractTextPlugin("styles.css"),
 		new CopyWebpackPlugin([
 			{ from: 'src/image', to: 'images' }
 		]),

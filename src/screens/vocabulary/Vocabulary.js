@@ -6,6 +6,17 @@ import { initData } from '../../actions/vocabulary';
 import { randomIntFromInterval } from '../../selectors';
 import Match from "../Components/Match";
 
+import {
+	getWordList,
+	saveCategory
+} from '../../actions/vocabulary';
+
+import {
+	groupBy,
+	groupSelect,
+	groupByCategory
+} from '../../selectors';
+
 class Vocabulary extends Component {
 
 	constructor(props) {
@@ -14,10 +25,10 @@ class Vocabulary extends Component {
 			setName: "",
 			data: [],
 			playVoice: false,
-			world: "",
+			word: "",
 			wordIndex: 0,
-			worldAnswer: "",
-			worldError: false,
+			wordAnswer: "",
+			wordError: false,
 			translation: "",
 			isAnswer: false,
 			isShowAnswer: false,
@@ -26,7 +37,7 @@ class Vocabulary extends Component {
 
 		this.updateSelect = this.updateSelect.bind(this);
 		this.updateInput = this.updateInput.bind(this);
-		this.newWorld = this.newWorld.bind(this);
+		this.newWord = this.newWord.bind(this);
 		this.deleteError = this.deleteError.bind(this);
 		this.onEnd = this.onEnd.bind(this);
 		this.onPlay = this.onPlay.bind(this);
@@ -34,43 +45,39 @@ class Vocabulary extends Component {
 		this.onSubmit = this.onSubmit.bind(this);
 	}
 
-	componentDidMount() {
-		this.props.initData();
+	async componentDidMount() {
+		await this.props.getWordList();
+		this.props.saveCategory(this.props.selectSet[0].value);
+
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.setState({
-			setName: nextProps.selectSet[0].value,
-			data: nextProps.array[nextProps.selectSet[0].value],
-			world: nextProps.array[nextProps.selectSet[0].value][0].ru,
-			translation: nextProps.array[nextProps.selectSet[0].value][0].en,
-			wordIndex: 1,
-		})
+		if (nextProps.data.length) {
+			this.setState({
+				setName: nextProps.selectSet[0].value,
+				word: nextProps.data[0].word ,
+				translation: nextProps.data[0].translation,
+				wordIndex: 1,
+			})
+		}
 	}
 
-	updateSelect(event) {
-		const { array } = this.props;
-		const { data } = this.state;
-		this.setState({
-			set: event.target.value,
-			data: array[event.target.value],
-			world: array[event.target.value][0].ru,
-			translation: array[event.target.value][0].en
-		});
+	async updateSelect(event) {
+		await this.props.saveCategory(event.target.value);
 	}
 
 	updateInput(event) {
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	newWorld() {
-		const { data, wordIndex } = this.state;
-
+	newWord() {
+		const { wordIndex } = this.state;
+		const { data } = this.props;
 		let index = wordIndex >= data.length ? 0 : wordIndex;
 		this.setState({
-			worldAnswer: "",
-			world: data[index].ru,
-			translation: data[index].en,
+			wordAnswer: "",
+			word: data[index].word,
+			translation: data[index].translation,
 			isAnswer: false,
 			wordIndex: index + 1,
 		});
@@ -78,7 +85,7 @@ class Vocabulary extends Component {
 
 	deleteError() {
 		this.setState({
-			worldError: false,
+			wordError: false,
 		})
 	}
 
@@ -88,7 +95,7 @@ class Vocabulary extends Component {
 				playVoice: false,
 			}, () => {
 				if (this.state.isAnswer) {
-					this.newWorld()
+					this.newWord()
 				}
 			}
 		);
@@ -109,31 +116,33 @@ class Vocabulary extends Component {
 
 	onSubmit(e) {
 		e.preventDefault();
-		const { translation, worldAnswer } = this.state;
-		if (translation === worldAnswer) {
+
+		const { word, wordAnswer } = this.state;
+		console.log("word, wordAnswer", word, wordAnswer);
+		if (word === wordAnswer) {
 			this.setState({
 				isAnswer: true,
 				isShowAnswer: false,
 			}, () => {
 				this.onPlay();
-				this.newWorld();
+				this.newWord();
 			})
 		} else {
 			this.setState({
-				worldError: true,
+				wordError: true,
 			})
 		}
 	}
 
 
 	render() {
-		const { playVoice, world, data, worldAnswer, worldError, translation, isShowAnswer } = this.state;
-		const { selectSet } = this.props;
-
+		const { playVoice, word, wordAnswer, wordError, translation, isShowAnswer } = this.state;
+		const { selectSet, data } = this.props;
+console.log("data", data);
 		return (
 			<div className="page-content">
 				<button id="button-sound" className="button-sound" type="button"></button>
-				<div id="Worlds">
+				<div id="Words">
 					<h3>Translate</h3>
 					<h4>Choose the Set</h4>
 					<select onChange={this.updateSelect}>
@@ -146,31 +155,27 @@ class Vocabulary extends Component {
 						<VoicePlayer
 							onEnd={this.onEnd}
 							play
-							text={translation}
+							text={word}
 						/>
 					}
 
-					<select id="language">
-						<option value="ru">Native</option>
-						<option value="en">English</option>
-					</select>
-					<div id="world">{world}</div>
+					<div id="word">{translation}</div>
 					<form id="form" onSubmit={this.onSubmit}>
-						<input id="answer" type="text" name="worldAnswer"
-							value={worldAnswer}
-							className={worldError ? "error" : ""}
+						<input id="answer" type="text" name="wordAnswer"
+							value={wordAnswer}
+							className={wordError ? "error" : ""}
 							onFocus={this.deleteError}
 							onChange={this.updateInput}/>
 						<div className="answer-result"></div>
 						<button id="button" className="button-check" type="submit"></button>
-						<button id="button-next" className="button-new" type="button" onClick={this.newWorld}></button>
+						<button id="button-next" className="button-new" type="button" onClick={this.newWord}></button>
 						<button id="button-speak" className="button-speak" type="button" onClick={this.onPlay}>Speak
 						</button>
 					</form>
 					<button id="button-answer" className="answer" type="button" onClick={this.showAnswer}>Show Answer
 					</button>
 					{isShowAnswer &&
-						<span id="right-answer">{translation}</span>
+						<span id="right-answer">{word}</span>
 					}
 
 					<h3>Make up the word</h3>
@@ -185,12 +190,16 @@ class Vocabulary extends Component {
 }
 
 const mapStateToProps = state => ({
-	selectSet: state.vocabulary.selectValues,
-	array: state.vocabulary.arrays,
+	selectSet: groupSelect(state),
+	data: groupByCategory(state),
 });
 
 const mapDispatchToProps = {
-	initData
+	initData,
+	getWordList,
+	groupBy,
+	saveCategory,
+	groupByCategory
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Vocabulary);

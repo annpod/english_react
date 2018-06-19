@@ -2,6 +2,7 @@ import {
 	addWord as addWordApi,
 	getWordList as getWordListApi,
 	updatWord as updatWordApi,
+	deleteWord as deleteWordApi,
 } from '../api/api';
 import {
 	ADD_WORD_START,
@@ -16,8 +17,17 @@ import {
 	GET_WORD_LIST_START,
 	GET_WORD_LIST_SUCCESS,
 	GET_WORD_LIST_FAILURE,
+	CATEGORY_LIST,
+	SAVE_CATEGORY
 } from './index';
 
+export const categoryList = (categoryList) => {
+	return { type: CATEGORY_LIST, payload: categoryList };
+};
+
+export const saveCategory = (category) => {
+	return { type: SAVE_CATEGORY, payload: category };
+};
 
 export const addWord = (body) => async (dispatch) => {
 	console.log("addWord", body);
@@ -73,14 +83,13 @@ export const updateData = (id, body) => async (dispatch) => {
 	}
 };
 
-export const deleteData = (id, body) => async (dispatch) => {
+export const deleteData = (id) => async (dispatch) => {
 	console.log("updateData");
 	dispatch({ type: DELETE_WORD_START });
 	try {
-		const word = await updatWordApi(id, body);
+		const word = await deleteWordApi(id);
 		dispatch({
 			type: DELETE_WORD_SUCCESS,
-			payload: word,
 		});
 	} catch (err) {
 		dispatch({

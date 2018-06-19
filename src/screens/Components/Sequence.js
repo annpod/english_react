@@ -40,8 +40,8 @@ class Sequence extends Component {
 		let index = itemIndex >= data.length ? 0 : itemIndex;
 		this.setState({
 			itemIndex: index + 1,
-			wordDnD: data[index].en,
-			wordDnDItems: data[index].en.split('').sort(),
+			wordDnD: data[index].word,
+			wordDnDItems: data[index].word.split('').sort(),
 		})
 	}
 

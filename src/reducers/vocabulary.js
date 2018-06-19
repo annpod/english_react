@@ -26,6 +26,8 @@ import {
 	GET_WORD_LIST_START,
 	GET_WORD_LIST_SUCCESS,
 	GET_WORD_LIST_FAILURE,
+	CATEGORY_LIST,
+	SAVE_CATEGORY,
 } from '../actions/index';
 
 import { selectValues, arrays } from '../data/vocabulary';
@@ -33,12 +35,20 @@ import { selectValues, arrays } from '../data/vocabulary';
 import { createReducer } from './utils';
 
 const initialState = {
-	vocabulary: [],
+	wordList: [],
+	categoryList: [],
+	category: ""
 };
 
 const handlers = {
 	[GET_WORD_LIST_SUCCESS]: (state, { payload }) => {
-		return { vocabulary: payload };
+		return { wordList: payload };
+	},
+	[CATEGORY_LIST]: (state, { payload }) => {
+		return { categoryList: payload };
+	},
+	[SAVE_CATEGORY]: (state, { payload }) => {
+		return { category: payload };
 	}
 };
 
