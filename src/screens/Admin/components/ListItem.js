@@ -104,16 +104,17 @@ class ListItem extends Component {
 		return (
 			<tr key={`${index}1`}>
 				<td>
+					<Select.Creatable
+						disabled={!isEdit}
+						multi={multi}
+						options={selectSet}
+						onChange={this.handleOnChange}
+						value={multi ? multiValue : value}
+					/>
+				</td>
+				<td>
 					{isEdit ?
-						<div>
-							<Select.Creatable
-								multi={multi}
-								options={selectSet}
-								onChange={this.handleOnChange}
-								value={multi ? multiValue : value}
-							/>
-							<input className="input-edit"  name="editWord" value={editWord} onChange={this.updateInput}/>
-						</div>
+						<input className="input-edit"  name="editWord" value={editWord} onChange={this.updateInput}/>
 						:
 						<div className="table-text">{item.word}</div>
 					}
