@@ -64,7 +64,6 @@ class Words extends Component {
 	render() {
 		const { multi, multiValue, value } = this.state;
 		const { selectSet, data, categoryList } = this.props;
-		console.log("data", data);
 		return (
 			<div>
 				<span>

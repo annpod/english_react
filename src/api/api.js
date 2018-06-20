@@ -76,3 +76,17 @@ fetch('http://localhost:3012/vocabulary', {
 .then(res => console.log(res));
 }
 */
+/*Question*/
+
+export const addQuestion = (body) => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/question`,{
+		headers: headers,
+		body: JSON.stringify(body),
+		method: "POST"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};

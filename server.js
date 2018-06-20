@@ -4,6 +4,7 @@ var db = require('./db');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectID = require('mongodb').ObjectID;
 var vocabularyController = require('./controllers/vocabulary');
+var questionController = require('./controllers/question');
 const cors = require('cors');
 var app = express();
 
@@ -27,6 +28,12 @@ app.get('/vocabulary/:id', vocabularyController.findById);
 app.post('/vocabulary', vocabularyController.create);
 app.put('/vocabulary/:id', vocabularyController.update);
 app.delete('/vocabulary/:id', vocabularyController.delete);
+
+app.get('/question', questionController.all);
+app.get('/question/:id', questionController.findById);
+app.post('/question', questionController.create);
+app.put('/question/:id', questionController.update);
+app.delete('/question/:id', questionController.delete);
 
 db.connect("mongodb://localhost:27017/myapi", function(err) {
 	if (err) {
