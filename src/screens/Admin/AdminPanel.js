@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 import Words from './Words';
+import Test from './Test';
 
 class AdminPanel extends Component {
 
@@ -16,7 +19,20 @@ class AdminPanel extends Component {
 
 		return (
 			<div className="page-content">
-				<Words />
+				<Tabs defaultIndex={0}>
+					<TabList>
+						<Tab>Vocabulary</Tab>
+						<Tab>Test</Tab>
+					</TabList>
+
+					<TabPanel>
+						<Words />
+					</TabPanel>
+					<TabPanel>
+						<Test />
+					</TabPanel>
+				</Tabs>
+
 			</div>
 		);
 	}
