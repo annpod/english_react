@@ -10,7 +10,7 @@ import {
 	addQuestion,
 	//deleteQuestion,
 	getQuestionList,
-	//updateQuestion
+	updateQuestion
 } from "../../../actions/question";
 
 import {
@@ -24,8 +24,8 @@ class QuestionItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			question: "",
-			answer: "1111",
+			question: props.item.question,
+			answer: props.item.answer,
 			multi: true,
 			value: [],
 			isEdit: false,
@@ -41,6 +41,14 @@ class QuestionItem extends Component {
 		this.saveEdit = this.saveEdit.bind(this);
 		this.cancelEdit = this.cancelEdit.bind(this);
 		this.editQuestion = this.editQuestion.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			multiValue: categoryList(nextProps.item.category),
+			question: nextProps.item.question,
+			answer: nextProps.item.answer
+		})
 	}
 
 	updateInput(event) {
@@ -64,33 +72,48 @@ class QuestionItem extends Component {
 	}
 
 	updateAnswerList(index, answer) {
-		const answers = Object.assign([], this.state.answersList);
+		console.log("this.state.editAnswer", this.state.editAnswer);
+		const answers = Object.assign([], this.state.isEdit ? this.state.editAnswer : this.state.answersList);
 		answers[index] = answer;
-		this.setState({ answersList: answers });
+		this.setState({ editAnswer: answers });
 	}
 
-	saveEdit() {
-		const { answersList, question, multiValue } = this.state;
-		const answer = answersList.filter((item => item.answer !== ""));
-		if (multiValue) {
-			let categoryVar = multiValue;
-			const categoryArray = [];
-			for (let category of categoryVar) {
-				categoryArray.push(category.value);
-			}
-			if (question && categoryArray) {
-				const body = {question, answer, category: categoryArray};
-				console.log("body", body);
-				this.props.addQuestion(body);
-			}
+
+	async saveEdit() {
+		const { editAnswer, editQuestion, multiValue } = this.state;
+		const { item } = this.props;
+		let categoryVar = multiValue;
+		const categoryArray = [];
+		for (let category of categoryVar) {
+			categoryArray.push(category.value);
 		}
-		this.props.getData();
+		const answer = editAnswer.filter((item => item.answer !== ""));
+		const editQuestionVar = editQuestion.trim();
+		if (editQuestionVar && categoryArray.length) {
+			const body = {question: editQuestionVar, answer, category: categoryArray};
+			console.log("body", body);
+			this.setState({
+				isEdit: false,
+				editQuestion: "",
+				editAnswer: []
+			});
+			await this.props.updateQuestion(item._id, body);
+			this.props.getData();
+		}
 	}
-
-	editQuestion() {
+	
+	editQuestion(){
+		const { item } = this.props;
+		const options = [];
+		item.category.forEach((item) => {options.push({ value: item, label: item })});
+		this.handleOnChange(options);
 		this.setState({
-			isEdit: true
-		})
+			isEdit: true,
+			id: item._id,
+			editQuestion: item.question,
+			editAnswer: item.answer,
+			multiValue: options,
+		});
 	}
 
 	cancelEdit() {
@@ -100,8 +123,9 @@ class QuestionItem extends Component {
 	}
 
 	render() {
-		const { question, answer, multi, multiValue, isEdit, answersList } = this.state;
+		const { question, answer, multi, multiValue, isEdit, answersList, editQuestion, editAnswer } = this.state;
 		const { item, selectSet } = this.props;
+		console.log("item.answer", item.answer)
 		return (
 			<div className="test">
 				<Select.Creatable
@@ -115,10 +139,13 @@ class QuestionItem extends Component {
 					<div>
 						<div>{item.question}</div>
 						{item.answer.map((item, index) => (
-							<div className="checkbox">
-								<input className="input-question" name="question" type="checkbox" disabled checked={item.correct} />
-								<label htmlFor="question">{item.answer}</label>
-							</div>
+							<AnswerItem
+								isDisabled
+								key={index}
+								item={item}
+								updateAnswerList={this.updateAnswerList}
+								index={index}
+							/>
 						))}
 						<button className="button-image button-image_save" onClick={this.editQuestion}>
 							<FontAwesomeIcon icon={faPencilAlt} />
@@ -129,12 +156,9 @@ class QuestionItem extends Component {
 					</div>
 					:
 					<div>
-						<input className="input-question" name="question" value={question} onChange={this.updateInput}/>
-						<button className="button-image button-image_save" onClick={this.saveNewQuestion}>
-							<FontAwesomeIcon icon="save"/>
-						</button>
+						<input className="input-question" name="editQuestion" value={editQuestion} onChange={this.updateInput}/>
 						<br/>
-						{item.answer.map((item, index) => (
+						{editAnswer.map((item, index) => (
 							<AnswerItem
 								key={index}
 								item={item}
@@ -167,7 +191,7 @@ const mapDispatchToProps = {
 	addQuestion,
 	//deleteQuestion,
 	getQuestionList,
-	//updateQuestion
+	updateQuestion
 };
 
 

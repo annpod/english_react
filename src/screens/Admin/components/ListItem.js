@@ -34,6 +34,12 @@ class ListItem extends Component {
 
 	}
 
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			multiValue: categoryList(nextProps.item.category)
+		})
+	}
+
 	updateInput(event) {
 		this.setState({[event.target.name]: event.target.value});
 	}

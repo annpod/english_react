@@ -1,7 +1,7 @@
 import {
 	addQuestion as addQuestionApi,
 	getQuestionList as getQuestionListApi,
-	updatQuestion as updatQuestionApi,
+	updateQuestion as updateQuestionApi,
 	deleteQuestion as deleteQuestionApi,
 } from '../api/api';
 import {
@@ -63,23 +63,24 @@ export const getQuestionList = () => async (dispatch) => {
 	}
 };
 
-// export const updateQuestion = (id, body) => async (dispatch) => {
-// 	dispatch({ type: UPDATE_QUESTION_START });
-// 	try {
-// 		const QUESTION = await updatQUESTIONApi(id, body);
-// 		dispatch({
-// 			type: UPDATE_QUESTION_SUCCESS,
-// 			payload: QUESTION,
-// 		});
-// 	} catch (err) {
-// 		dispatch({
-// 			type: UPDATE_QUESTION_FAILURE,
-// 			payload: err,
-// 			error: true,
-// 		});
-// 	}
-// };
-//
+export const updateQuestion = (id, body) => async (dispatch) => {
+	console.log("id", id);
+ 	dispatch({ type: UPDATE_QUESTION_START });
+ 	try {
+ 		const question = await updateQuestionApi(id, body);
+ 		dispatch({
+ 			type: UPDATE_QUESTION_SUCCESS,
+ 			payload: question,
+ 		});
+ 	} catch (err) {
+ 		dispatch({
+ 			type: UPDATE_QUESTION_FAILURE,
+ 			payload: err,
+ 			error: true,
+ 		});
+ 	}
+};
+
 // export const deleteQuestion = (id) => async (dispatch) => {
 // 	console.log("updateData");
 // 	dispatch({ type: DELETE_QUESTION_START });

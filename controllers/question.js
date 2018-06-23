@@ -41,7 +41,7 @@ exports.update = function (req, res) {
 		answer: req.body.answer,
 		category: req.body.category
 	};
-	Question.update(req.params.id, word, function (err, result) {
+	Question.update(req.params.id, question, function (err, result) {
 		if (err) {
 			console.log(err);
 			return res.sendStatus(500);

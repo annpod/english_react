@@ -7,12 +7,19 @@ class AnswerItem extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			answer: "",
-			correct: false,
+			answer: props.item.answer || "",
+			correct: !!props.item.correct || false,
 		};
 
 		this.updateInput = this.updateInput.bind(this);
 		this.updateCheckbox = this.updateCheckbox.bind(this);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({			
+			answer: nextProps.item.answer || "",
+			correct: !!nextProps.item.correct || false,
+		})
 	}
 
 	updateInput(event) {
@@ -28,14 +35,15 @@ class AnswerItem extends Component {
 
 	render() {
 		const { answer, correct } = this.state;
+		const { isDisabled } = this.props;
 
 		return (
 			<div className="checkbox-group">
 				<label className="checkbox-group__label" >
-					<input type="checkbox" className="checkbox-input input-answer" name="correct" value={correct} onChange={this.updateCheckbox} />
+					<input type="checkbox" className="checkbox-input input-answer" disabled={isDisabled} name="correct" checked={correct} value={correct} onChange={this.updateCheckbox} />
 					<span className="checkbox-mark" />
 				</label>
-				<input className="input-question" name="answer" value={answer} onChange={this.updateInput}/>
+				<input className="input-question" name="answer" value={answer} disabled={isDisabled} onChange={this.updateInput}/>
 			</div>				
 		);
 	}

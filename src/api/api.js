@@ -102,3 +102,16 @@ export const getQuestionList = () => {
 	.then(response => handleResponse(response))
 	.catch(error => Promise.reject(error));
 };
+
+export const updateQuestion = (id, body) => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/question/${id}`,{
+		headers: headers,
+		body: JSON.stringify(body),
+		method: "PUT"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};

@@ -8,9 +8,7 @@ import AnswerItem from '../components/AnswerItem';
 
 import {
 	addQuestion,
-	//deleteQuestion,
 	getQuestionList,
-	//updateQuestion
 } from "../../../actions/question";
 
 import {
