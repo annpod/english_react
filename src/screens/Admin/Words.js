@@ -1,25 +1,21 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import fontawesome from '@fortawesome/fontawesome';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
-import createClass from 'create-react-class';
 import Select from 'react-select';
 import ListItem from './components/ListItem';
 import NewItem from './components/NewItem';
+import Navigation from './components/Navigation';
 
 import {
 	addWord,
 	getWordList,
 	updateData,
 	deleteData,
-	categoryList,
-} from '../../actions/vocabulary';
+	categoryList
+} from '../../actions/word';
 
 import {
-	groupSelect,
-	filterData,
-	getList
+	groupSelectWord,
+	getListWord
 } from '../../selectors';
 
 class Words extends Component {
@@ -42,7 +38,6 @@ class Words extends Component {
 	}
 
 	async getData() {
-		console.log("get data");
 		await this.props.getWordList();
 	}
 
@@ -66,6 +61,7 @@ class Words extends Component {
 		const { selectSet, data, categoryList } = this.props;
 		return (
 			<div>
+				<Navigation />
 				<span>
 					<label>filter data</label>
 					<Select.Creatable
@@ -105,8 +101,8 @@ class Words extends Component {
 }
 
 const mapStateToProps = (state) => ({
-	selectSet: groupSelect(state),
-	data : getList(state),
+	selectSet: groupSelectWord(state),
+	data : getListWord(state),
 });
 
 const mapDispatchToProps = {
@@ -114,7 +110,7 @@ const mapDispatchToProps = {
 	getWordList,
 	updateData,
 	deleteData,
-	getList,
+	getListWord,
 	categoryList
 };
 

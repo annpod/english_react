@@ -7,7 +7,7 @@ import Select from 'react-select';
 import {
 	addWord,
 	categoryList,
-} from '../../../actions/vocabulary';
+} from '../../../actions/word';
 
 class NewItem extends Component {
 

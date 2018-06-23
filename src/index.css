@@ -14,7 +14,7 @@ main {
 	height: 100%;
 	font-size: 13px;
 	color: #333;
-	background: url('/images/panda-full.png') no-repeat right 50px bottom 20px;
+	background: url('/image/panda-full.png') no-repeat right 50px bottom 20px;
 	background-color: rgba(255,255,255,0.9);
 	background-size: auto 170px ;
 	box-shadow: 0 0 4px 2px rgba(0,0,0,0.15);
@@ -32,13 +32,13 @@ main {
 	color: blue;
 }
 .main-small-page {
-	background: url("/images/main-small.png") no-repeat center center rgba(255, 255, 255, 0.95);
+	background: url("/image/main-small.png") no-repeat center center rgba(255, 255, 255, 0.95);
 	background-size: auto 100%;
 	min-height: 855px;
 	padding-top: 30px;
 }
 body {
-	background: url('/images/pens.png') repeat-x bottom center #fdefee;
+	background: url('/image/pens.png') repeat-x bottom center #fdefee;
 	background-attachment: fixed;
 	height: 100%;
 	min-height: 100vh;
@@ -211,7 +211,7 @@ hr{
 	box-shadow: 1px 1px 1px 1px rgba(0,0,0,0.2);
 }
 .button-speak {
-	background: url('/images/voice.svg') no-repeat #c22c45 center center;
+	background: url('/image/voice.svg') no-repeat #c22c45 center center;
 	background-size: auto 70%;
 	border: none;
 	border-radius: 3px;
@@ -236,7 +236,7 @@ hr{
 	transition: 0.3s all;
 }
 .button-check {
-	background: url('/images/check.svg') no-repeat #65a439 center center;
+	background: url('/image/check.svg') no-repeat #65a439 center center;
 	border: none;
 	border-radius: 3px;
 	margin-top: 10px;
@@ -341,7 +341,7 @@ hr{
 #body{
 	height: 450px;
 	width: 389px;
-	background: url("/images/body.png") no-repeat;
+	background: url("/image/body.png") no-repeat;
 	background-size: cover;
 	position: relative;
 	margin-bottom: 30px;
@@ -443,7 +443,7 @@ hr{
 #family{
 	height: 750px;
 	width: 632px;
-	background: url("/images/family3.png") no-repeat;
+	background: url("/image/family3.png") no-repeat;
 	background-size: cover;
 	position: relative;
 	margin-bottom: 30px;
@@ -599,19 +599,19 @@ hr{
 	cursor: move;
 }
 .smile1 {
-	background: url('/images/smile1.jpg') no-repeat top right;
+	background: url('/image/smile1.jpg') no-repeat top right;
 	background-size: 200px auto;
 }
 .smile2 {
-	background: url('/images/smile2.jpg') no-repeat top right;
+	background: url('/image/smile2.jpg') no-repeat top right;
 	background-size: 200px auto;
 }
 .smile3 {
-	background: url('/images/smile3.jpg') no-repeat top right;
+	background: url('/image/smile3.jpg') no-repeat top right;
 	background-size: 200px auto;
 }
 .smile4 {
-	background: url('/images/smile4.png') no-repeat bottom right;
+	background: url('/imagessmile4.png') no-repeat bottom right;
 	background-size: 200px auto;
 }
 .match button {
@@ -622,7 +622,7 @@ hr{
 	overflow: hidden;
 }
 .voice {
-	background: url('/images/voice.png') no-repeat bottom right;
+	background: url('/image/voice.png') no-repeat bottom right;
 	background-size: 200px auto;
 }
 .empty-letter .empty-item{
@@ -702,12 +702,12 @@ hr{
 	display: inline-block;
 }
 #Tick .checkbox-container.correct{
-	background: url('/images/check_g.png') no-repeat center right;
+	background: url('/image/check_g.png') no-repeat center right;
 	background-size: 18px auto;
 	border: none !important;
 }
 #Tick .checkbox-container.error{
-	background: url('/images/cross.png') no-repeat center right;
+	background: url('/image/cross.png') no-repeat center right;
 	background-size: 20px auto;
 	border: none !important;;
 }
@@ -718,7 +718,7 @@ hr{
 	height: 30px;
 	width: 30px;
 	min-width: 30px;
-	background: url('/images/sound.svg') no-repeat center center #63afbd;
+	background: url('/image/sound.svg') no-repeat center center #63afbd;
 	background-size: 20px auto;
 	border: none;
 	border-radius: 4px;
@@ -727,7 +727,7 @@ hr{
 	transition: 0.3s all;
 }
 .button-sound.no-sound {
-	background: url('/images/no-sound.svg') no-repeat center center #63afbd;
+	background: url('/image/no-sound.svg') no-repeat center center #63afbd;
 	background-size: 20px auto;
 }
 input[type="checkbox"] {
@@ -852,7 +852,7 @@ input[type="checkbox"] {
 }
 .answer-result.error,
 .verb-result.error {
-	background: url('/images/cross.png') no-repeat center right;
+	background: url('/image/cross.png') no-repeat center right;
 	background-size: 20px auto;
 	border: none !important;;
 }
@@ -865,7 +865,7 @@ input[type="checkbox"] {
 .button-home {
 	height: 30px;
 	width: 30px;
-	background: url('/images/home.svg') no-repeat center center #63afbd;
+	background: url('/image/home.svg') no-repeat center center #63afbd;
 	background-size: 20px auto;
 	border: none;
 	border-radius: 4px;
@@ -881,7 +881,7 @@ input[type="checkbox"] {
 #menu-nav{
 	height: 30px;
 	width: 30px;
-	background: url('/images/menu.svg') no-repeat center center #63afbd;
+	background: url('/image/menu.svg') no-repeat center center #63afbd;
 	background-size: 20px auto;
 	border: none;
 	border-radius: 4px;
@@ -1042,4 +1042,24 @@ button.active {
 }
 .table-text {
 	padding-left: 8px;
+}
+
+/*admin-mav*/
+.admin-nav{
+	width: 100%;
+	padding-bottom: 30px;
+	background-color: #63afbd;
+	list-style: none;
+}
+.admin-nav__item{
+	color: #444;
+	text-decoration: none;
+}
+.admin-nav__item:hover{
+	color: #111;
+	text-decoration: none;
+}
+/*select*/
+.Select-control {
+	width: 200px;
 }

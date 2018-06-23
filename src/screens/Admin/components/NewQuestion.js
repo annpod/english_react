@@ -4,23 +4,21 @@ import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
 import Select from 'react-select';
-import AnswerItem from './components/AnswerItem';
+import AnswerItem from '../components/AnswerItem';
 
 import {
 	addQuestion,
-	categoryList,
-	deleteQuestion,
+	//deleteQuestion,
 	getQuestionList,
-	updateQuestion
-} from "../../actions/question";
+	//updateQuestion
+} from "../../../actions/question";
+
 import {
-	getList,
-	groupSelect
-} from "../../selectors";
+	groupSelectQuestion,
+} from "../../../selectors";
 
 
-
-class Test extends Component {
+class NewQuestion extends Component {
 
 	constructor(props) {
 		super(props);
@@ -30,19 +28,18 @@ class Test extends Component {
 			multi: true,
 			value: [],
 			isEdit: true,
-			answersList: [{answer:"",correct:""}],
+			answersList: [{ answer:"", correct:"" }],
 			answersListLength: 1,
 		};
 
 		this.updateInput = this.updateInput.bind(this);
 		this.handleOnChange = this.handleOnChange.bind(this);
-		this.getAnswersList = this.getAnswersList.bind(this);
 		this.addNewAnswer = this.addNewAnswer.bind(this);
 		this.updateAnswerList = this.updateAnswerList.bind(this);
 		this.saveNewQuestion = this.saveNewQuestion.bind(this);
 	}
+
 	updateInput(event) {
-		console.log(event.target);
 		this.setState({[event.target.name]: event.target.value});
 	}
 
@@ -55,21 +52,8 @@ class Test extends Component {
 		}
 	}
 
-	getAnswersList() {
-		const { question, answer } = this.state;
-		let answerList;
-
-			answerList = <NewAnswer
-				updateInput={this.updateInput}
-				question={question}
-				answer={answer}
-			/>;
-
-		return answerList;
-	}
-
 	addNewAnswer() {
-		const newItem = [{answer:"",correct:""}];
+		const newItem = [{answer:"", correct:""}];
 		this.setState({
 			answersList: [...this.state.answersList, ...newItem],
 		})
@@ -84,37 +68,37 @@ class Test extends Component {
 	saveNewQuestion() {
 		const { answersList, question, multiValue } = this.state;
 		const answer = answersList.filter((item => item.answer !== ""));
-		console.log("answer", answer);
-		let categoryVar = multiValue;
-		const categoryArray = [];
-		for (let category of categoryVar) {
-			categoryArray.push(category.value);
+		if (multiValue) {
+			let categoryVar = multiValue;
+			const categoryArray = [];
+			for (let category of categoryVar) {
+				categoryArray.push(category.value);
+			}
+			if (question && categoryArray) {
+				const body = {question, answer, category: categoryArray};
+				this.props.addQuestion(body);
+			}
 		}
-		this.props.categoryList(categoryArray);
-		if ( question && categoryArray ) {
-			const body = { question, answer, category: categoryArray };
-			this.props.addQuestion(body);
-		}
-
+		this.props.getData();
 	}
 
 	render() {
 		const { question, answer, multi, multiValue, isEdit, answersList } = this.state;
-console.log("answersList", answersList);
+		const { selectSet } = this.props;
 		return (
 			<div className="test">
-
-				<Select.Creatable
-					multi={multi}
-					options={[]}
-					onChange={this.handleOnChange}
-					value={multi ? multiValue : value}
-				/>
-				<input className="input-question" name="question" value={question} onChange={this.updateInput}/>
-				<button className="button-image button-image_save" onClick={this.saveNewQuestion}>
-					<FontAwesomeIcon icon="save" />
-				</button>
-				<br/>
+				<div className="edit-question__wrapp">
+					<Select.Creatable
+						multi={multi}
+						options={selectSet}
+						onChange={this.handleOnChange}
+						value={multi ? multiValue : value}
+					/>
+					<input className="input-question" name="question" value={question} onChange={this.updateInput}/>
+					<button className="button-image button-image_save" onClick={this.saveNewQuestion}>
+						<FontAwesomeIcon icon="save" />
+					</button>
+				</div>
 				{answersList.map((item, index) => (
 					<AnswerItem
 						key={index}
@@ -131,17 +115,14 @@ console.log("answersList", answersList);
 	}
 }
 const mapStateToProps = (state) => ({
-	selectSet: groupSelect(state),
-	data : getList(state),
+	selectSet: groupSelectQuestion(state),
 });
 
 const mapDispatchToProps = {
 	addQuestion,
-	categoryList,
-	deleteQuestion,
-	getQuestionList,
-	updateQuestion
+	//deleteQuestion,
+	//updateQuestion
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Test);
+export default connect(mapStateToProps, mapDispatchToProps)(NewQuestion);

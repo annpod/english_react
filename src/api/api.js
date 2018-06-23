@@ -90,3 +90,15 @@ export const addQuestion = (body) => {
 	.then(response => handleResponse(response))
 	.catch(error => Promise.reject(error));
 };
+
+export const getQuestionList = () => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/question`,{
+		headers: headers,
+		method: "GET"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};

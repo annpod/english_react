@@ -9,7 +9,7 @@ module.exports = {
 		app: path.join(__dirname, './src/index.js')
 	},
 	output: {
-		filename: '[name].[hash].js',
+		filename: '[name].js',
 		path: path.join(__dirname, 'build')
 	},
 	resolve: {
@@ -39,7 +39,7 @@ module.exports = {
 			filename: 'index.html'
 		}),
 		new CopyWebpackPlugin([
-			{ from: 'src/image', to: 'images' }
+			{ from: 'src/image', to: 'image' }
 		]),
 	],
 	watch: true,

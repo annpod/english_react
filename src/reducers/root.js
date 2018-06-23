@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import vocabulary from './vocabulary';
+import word from './word';
 import question from './question';
 import admin from './admin';
 
 export default combineReducers({
-	vocabulary,
+	word,
 	question,
 	admin,
 });

@@ -7,7 +7,9 @@ import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
 import {
 	updateData,
 	deleteData,
-} from '../../../actions/vocabulary';
+} from '../../../actions/word';
+
+import { categoryList } from '../../../selectors';
 
 class ListItem extends Component {
 
@@ -21,7 +23,7 @@ class ListItem extends Component {
 			value: []
 		};
 
-		this.state.multiValue = props.item.category.reduce(opt => {return { value: opt, label: opt }});
+		this.state.multiValue = categoryList(props.item.category);
 
 		this.updateInput = this.updateInput.bind(this);
 		this.editWord = this.editWord.bind(this);
@@ -101,6 +103,7 @@ class ListItem extends Component {
 	render() {
 		const { editWord, editTranslation, isEdit, multi, multiValue, value } = this.state;
 		const { item, selectSet, index } = this.props;
+		console.log("multiValue",multiValue);
 		return (
 			<tr key={`${index}1`}>
 				<td>

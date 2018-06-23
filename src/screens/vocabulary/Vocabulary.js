@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { VoicePlayer, VoiceRecognition } from 'react-voice-components';
 import Sequence from '../Components/Sequence';
-import { initData } from '../../actions/vocabulary';
+import { initData } from '../../actions/word';
 import { randomIntFromInterval } from '../../selectors';
 import Match from "../Components/Match";
 
 import {
 	getWordList,
 	saveCategory
-} from '../../actions/vocabulary';
+} from '../../actions/word';
 
 import {
 	groupBy,
