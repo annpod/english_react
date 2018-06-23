@@ -60,6 +60,7 @@ class Question extends Component {
 		for (let category of value) {
 			categoryArray.push(category.value);
 		}
+		console.log("categoryArray", categoryArray);
 		this.props.categoryList(categoryArray);
 	}
 

@@ -29,6 +29,12 @@ const handlers = {
 	[GET_QUESTION_LIST_SUCCESS]: (state, { payload }) => {
 		return { questionList: payload };
 	},
+	[CATEGORY_LIST_QUESTION]: (state, { payload }) => {
+		return { categoryList: payload };
+	},
+	[SAVE_CATEGORY_QUESTION]: (state, { payload }) => {
+		return { category: payload };
+	}
 };
 
 export default createReducer(initialState, handlers);
