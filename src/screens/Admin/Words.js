@@ -62,39 +62,41 @@ class Words extends Component {
 		return (
 			<div>
 				<Navigation />
-				<span>
-					<label>filter data</label>
-					<Select.Creatable
-						multi={multi}
-						options={selectSet}
-						onChange={this.handleOnChange}
-						value={multi ? multiValue : value}
-					/>
-				</span>
-
-				<table className="table-vocabulary">
-					<thead>
-						<tr>
-							<th>Word</th>
-							<th>Translation</th>
-						</tr>
-					</thead>
-					<tbody>
-						<NewItem
-							selectSet={selectSet}
-							getData={this.getData}
+				<div className="page-content">
+					<span>
+						<label>filter data</label>
+						<Select.Creatable
+							multi={multi}
+							options={selectSet}
+							onChange={this.handleOnChange}
+							value={multi ? multiValue : value}
 						/>
-						{data && data.length > 0 && data.map((item, index) => (
-							<ListItem
-								key={`${index}3`}
-								index={index}
-								item={item}
-								categoryList={categoryList}
+					</span>
+
+					<table className="table-vocabulary">
+						<thead>
+							<tr>
+								<th>Word</th>
+								<th>Translation</th>
+							</tr>
+						</thead>
+						<tbody>
+							<NewItem
+								selectSet={selectSet}
 								getData={this.getData}
 							/>
-						))}
-					</tbody>
-				</table>
+							{data && data.length > 0 && data.map((item, index) => (
+								<ListItem
+									key={`${index}3`}
+									index={index}
+									item={item}
+									categoryList={categoryList}
+									getData={this.getData}
+								/>
+							))}
+						</tbody>
+					</table>
+				</div>
 			</div>
 		);
 	}

@@ -99,17 +99,19 @@ class NewQuestion extends Component {
 						<FontAwesomeIcon icon="save" />
 					</button>
 				</div>
-				{answersList.map((item, index) => (
-					<AnswerItem
-						key={index}
-						item={item}
-						updateAnswerList={this.updateAnswerList}
-						index={index}
-					/>
-				))}
-				<button className="button-image button-image_save" onClick={this.addNewAnswer}>
-					<FontAwesomeIcon icon={faPlus} />
-				</button>
+				<div className="new-answer__wrapp">
+					{answersList.map((item, index) => (
+						<AnswerItem
+							key={index}
+							item={item}
+							updateAnswerList={this.updateAnswerList}
+							index={index}
+						/>
+					))}
+					<button className="button-image button-image_save" onClick={this.addNewAnswer}>
+						<FontAwesomeIcon icon={faPlus} />
+					</button>
+				</div>
 			</div>
 		);
 	}

@@ -18,8 +18,11 @@ class AdminPanel extends Component {
 	render() {
 
 		return (
-			<div className="page-content">
+			<div>
 				<Navigation />
+				<div className="page-content">
+					
+				</div>
 			</div>
 		);
 	}

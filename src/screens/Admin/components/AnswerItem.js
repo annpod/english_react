@@ -36,15 +36,7 @@ class AnswerItem extends Component {
 					<span className="checkbox-mark" />
 				</label>
 				<input className="input-question" name="answer" value={answer} onChange={this.updateInput}/>
-			</div>
-			// <div className="checkbox-group">
-			// 	<div className="checkbox">
-			// 		<label>
-			// 			<input className="input-answer" type="checkbox" name="correct" value={correct} onChange={this.updateCheckbox}/>
-			// 		</label>
-			// 	</div>
-			// 	<input className="input-question" name="answer" value={answer} onChange={this.updateInput}/>
-			// </div>
+			</div>				
 		);
 	}
 }

@@ -74,21 +74,24 @@ class Question extends Component {
 		const { data, selectSet } = this.props;
 		console.log("data", data);
 		return (
-			<div className="test">
+			<div>
 				<Navigation />
-				filter list
-				<Select.Creatable
-					multi={multi}
-					options={selectSet}
-					onChange={this.handleOnChange}
-					value={multi ? multiValue : value}
-				/>
-				Question
-				<NewQuestion getData={this.getData} />
+				<div className="page-content">
+			
+					Filter list
+					<Select.Creatable
+						multi={multi}
+						options={selectSet}
+						onChange={this.handleOnChange}
+						value={multi ? multiValue : value}
+					/>
+					Question
+					<NewQuestion getData={this.getData} />
 
-				{data && data.map((item, index) =>(
-					<QuestionItem item={item} key={index} getData={this.getData} />
-				))}
+					{data && data.map((item, index) =>(
+						<QuestionItem item={item} key={index} getData={this.getData} />
+					))}
+				</div>			
 			</div>
 		);
 	}

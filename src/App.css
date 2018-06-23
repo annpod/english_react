@@ -1089,11 +1089,6 @@ input {
 	align-content: center;
 }
 /*checkbox*/
-.checkbox-block {
-	flex-grow: 1;
-	padding-top: 30px;
-}
-
 .checkbox-group .checkbox-group__label {
 	display: block;
 	position: relative;
@@ -1105,13 +1100,15 @@ input {
 
 .checkbox-mark {
 	position: absolute;
-	top: 2px;
+	top: 6px;
 	left: 0;
 	height: 22px;
 	width: 22px;
 	border: 1px solid #767789;
 }
-
+.checkbox-input {
+	height: 20px;
+}
 .checkbox-input:checked ~ .checkbox-mark {
 	border: 1px solid #0c91f9;
 }
@@ -1134,4 +1131,7 @@ input[type="checkbox"] {
 	position: absolute;
 	z-index: -1;
 	opacity: 0;
+}
+.new-answer__wrapp {
+	display: flex; 
 }
