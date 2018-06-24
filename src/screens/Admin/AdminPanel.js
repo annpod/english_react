@@ -28,5 +28,13 @@ class AdminPanel extends Component {
 	}
 }
 
+const mapStateToProps = (state) => ({
+	
+});
 
-export default AdminPanel;
+const mapDispatchToProps = {
+	
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPanel);
+

@@ -1,8 +1,9 @@
 import {
 	addQuestion as addQuestionApi,
-	getQuestionList as getQuestionListApi,
+	/*getQuestionList as getQuestionListApi,*/
 	updateQuestion as updateQuestionApi,
 	deleteQuestion as deleteQuestionApi,
+	getQuestionListBySubject as getQuestionListBySubjectApi,
 } from '../api/api';
 import {
 	ADD_QUESTION_START,
@@ -45,7 +46,7 @@ export const addQuestion = (body) => async (dispatch) => {
 		});
 	}
 };
-
+/*
 export const getQuestionList = () => async (dispatch) => {
 	dispatch({ type: GET_QUESTION_LIST_START });
 	try {
@@ -62,6 +63,23 @@ export const getQuestionList = () => async (dispatch) => {
 		});
 	}
 };
+*/
+export const getQuestionListBySubject = (subject) => async (dispatch) => {
+	dispatch({ type: GET_QUESTION_LIST_START });
+	try {
+		const questionList = await getQuestionListBySubjectApi(subject);
+		dispatch({
+			type: GET_QUESTION_LIST_SUCCESS,
+			payload: questionList,
+		});
+	} catch (err) {
+		dispatch({
+			type: GET_QUESTION_LIST_FAILURE,
+			payload: err,
+			error: true,
+		});
+	}
+};getQuestionListBySubject
 
 export const updateQuestion = (id, body) => async (dispatch) => {
 	console.log("id", id);
@@ -81,22 +99,21 @@ export const updateQuestion = (id, body) => async (dispatch) => {
  	}
 };
 
-// export const deleteQuestion = (id) => async (dispatch) => {
-// 	console.log("updateData");
-// 	dispatch({ type: DELETE_QUESTION_START });
-// 	try {
-// 		const question = await deleteQUESTIONApi(id);
-// 		dispatch({
-// 			type: DELETE_QUESTION_SUCCESS,
-// 		});
-// 	} catch (err) {
-// 		dispatch({
-// 			type: DELETE_QUESTION_FAILURE,
-// 			payload: err,
-// 			error: true,
-// 		});
-// 	}
-// };
+export const deleteQuestion = (id) => async (dispatch) => {
+ 	dispatch({ type: DELETE_QUESTION_START });
+ 	try {
+ 		const question = await deleteQuestionApi(id);
+ 		dispatch({
+ 			type: DELETE_QUESTION_SUCCESS,
+ 		});
+ 	} catch (err) {
+ 		dispatch({
+ 			type: DELETE_QUESTION_FAILURE,
+ 			payload: err,
+ 			error: true,
+ 		});
+ 	}
+};
 
 
 

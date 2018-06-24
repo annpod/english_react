@@ -65,6 +65,7 @@ class NewQuestion extends Component {
 
 	saveNewQuestion() {
 		const { answersList, question, multiValue } = this.state;
+		const { subject } = this.props;
 		const answer = answersList.filter((item => item.answer !== ""));
 		if (multiValue) {
 			let categoryVar = multiValue;
@@ -73,7 +74,7 @@ class NewQuestion extends Component {
 				categoryArray.push(category.value);
 			}
 			if (question && categoryArray) {
-				const body = {question, answer, category: categoryArray};
+				const body = {question, answer, category: categoryArray, subject};
 				this.props.addQuestion(body);
 			}
 		}

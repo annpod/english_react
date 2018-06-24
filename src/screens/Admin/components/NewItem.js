@@ -19,9 +19,8 @@ class NewItem extends Component {
 			translation: "",
 			multi: true,
 			multiValue: [],
-			value: []
+			value: [],
 		};
-
 		this.updateInput = this.updateInput.bind(this);
 		this.addWord = this.addWord.bind(this);
 		this.handleOnChange = this.handleOnChange.bind(this);
@@ -33,7 +32,7 @@ class NewItem extends Component {
 	}
 
 	async addWord() {
-		const { word, translation, multi, multiValue, value } = this.state;
+		const { word, translation, multi, multiValue, value, subject } = this.state;
 		let categoryVar = multi ? multiValue : value;
 		const categoryArray = [];
 		for (let category of categoryVar) {

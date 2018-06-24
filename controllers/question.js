@@ -20,11 +20,22 @@ exports.findById = function (req, res) {
 	})
 };
 
+exports.find = function (req, res) {
+	Question.find(req.params.subject, function (err, docs) {
+		if (err) {
+			console.log(err);
+			return res.sendStatus(500);
+		}
+		res.send(docs);
+	})
+};
+
 exports.create = function (req, res) {
 	var question = {
 		question: req.body.question,
 		answer: req.body.answer,
-		category: req.body.category
+		category: req.body.category,
+		subject: req.body.subject
 	};
 	Question.create(question, function (err, result) {
 		if (err) {

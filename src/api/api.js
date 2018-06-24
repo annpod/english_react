@@ -115,3 +115,27 @@ export const updateQuestion = (id, body) => {
 	.then(response => handleResponse(response))
 	.catch(error => Promise.reject(error));
 };
+
+export const getQuestionListBySubject = (subject) => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/subject/${subject}/question`,{
+		headers: headers,
+		method: "GET"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};
+
+export const deleteQuestion = (id) => {
+	var headers = new Headers();
+	headers.append('cache-control', 'no-cache');
+	headers.append('Content-Type', 'application/json');
+	return fetch(`${CONF.API_URL}/question/${id}`,{
+		headers: headers,
+		method: "DELETE"
+	})
+	.then(response => handleResponse(response))
+	.catch(error => Promise.reject(error));
+};

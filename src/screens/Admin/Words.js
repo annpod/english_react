@@ -26,11 +26,11 @@ class Words extends Component {
 			category: "",
 			multi: true,
 			multiValue: [],
-			value: []
+			value: [],
+			subject: "",
 		};
 		this.getData = this.getData.bind(this);
 		this.handleOnChange = this.handleOnChange.bind(this);
-
 	}
 
 	componentDidMount() {
@@ -55,13 +55,12 @@ class Words extends Component {
 		this.props.categoryList(categoryArray);
 	}
 
-
 	render() {
 		const { multi, multiValue, value } = this.state;
 		const { selectSet, data, categoryList } = this.props;
 		return (
 			<div>
-				<Navigation />
+				<Navigation />				
 				<div className="page-content">
 					<span>
 						<label>filter data</label>

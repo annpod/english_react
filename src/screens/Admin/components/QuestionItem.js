@@ -8,7 +8,7 @@ import AnswerItem from '../components/AnswerItem';
 
 import {
 	addQuestion,
-	//deleteQuestion,
+	deleteQuestion,
 	getQuestionList,
 	updateQuestion
 } from "../../../actions/question";
@@ -41,6 +41,7 @@ class QuestionItem extends Component {
 		this.saveEdit = this.saveEdit.bind(this);
 		this.cancelEdit = this.cancelEdit.bind(this);
 		this.editQuestion = this.editQuestion.bind(this);
+		this.deleteQuestion = this.deleteQuestion.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -78,10 +79,14 @@ class QuestionItem extends Component {
 		this.setState({ editAnswer: answers });
 	}
 
+	async deleteQuestion() {
+		await this.props.deleteQuestion(this.props.item._id);
+		this.props.getData();
+	}
 
 	async saveEdit() {
 		const { editAnswer, editQuestion, multiValue } = this.state;
-		const { item } = this.props;
+		const { item, subject } = this.props;
 		let categoryVar = multiValue;
 		const categoryArray = [];
 		for (let category of categoryVar) {
@@ -90,8 +95,7 @@ class QuestionItem extends Component {
 		const answer = editAnswer.filter((item => item.answer !== ""));
 		const editQuestionVar = editQuestion.trim();
 		if (editQuestionVar && categoryArray.length) {
-			const body = {question: editQuestionVar, answer, category: categoryArray};
-			console.log("body", body);
+			const body = {question: editQuestionVar, answer, category: categoryArray, subject};
 			this.setState({
 				isEdit: false,
 				editQuestion: "",
@@ -150,7 +154,7 @@ class QuestionItem extends Component {
 						<button className="button-image button-image_save" onClick={this.editQuestion}>
 							<FontAwesomeIcon icon={faPencilAlt} />
 						</button>
-						<button onClick={this.deleteWord} className="button-image button-image_delete">
+						<button onClick={this.deleteQuestion} className="button-image button-image_delete">
 							<FontAwesomeIcon icon="trash-alt" />
 						</button>
 					</div>
@@ -189,7 +193,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
 	addQuestion,
-	//deleteQuestion,
+	deleteQuestion,
 	getQuestionList,
 	updateQuestion
 };

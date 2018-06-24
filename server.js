@@ -35,6 +35,8 @@ app.post('/question', questionController.create);
 app.put('/question/:id', questionController.update);
 app.delete('/question/:id', questionController.delete);
 
+app.get('/subject/:subject/question', questionController.find);
+
 db.connect("mongodb://localhost:27017/myapi", function(err) {
 	if (err) {
 		return console.log(err);

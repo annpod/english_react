@@ -13,6 +13,12 @@ exports.findById = function (id, cb) {
 	})
 };
 
+exports.find = function (sub, cb) {
+	db.get().collection('question').find({subject: sub}).toArray(function (err, docs) {
+		cb(err, docs);
+	})
+};
+
 exports.create = function (question, cb) {
 	db.get().collection('question').insert(question, function (err, result) {
 		cb(err, result);
