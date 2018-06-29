@@ -5,19 +5,22 @@ export const randomIntFromInterval = function(min,max){
 /*COMMON*/
 
 export const groupByCategory = (currentProps) => {
-	return currentProps.reduce((groups, item) => {
-		const val = item['category'];
-		if (Array.isArray(val)) {
-			val.map((elem) =>{
-				groups[elem] = groups[elem] || [];
-				groups[elem].push(item);
-			})
-		} else {
-			groups[val] = groups[val] || [];
-			groups[val].push(item);
-		}
-		return groups;
-	}, {})
+	console.log("currentProps", currentProps);
+	if (currentProps) {
+		return currentProps.reduce((groups, item) => {
+			const val = item['category'];
+			if (Array.isArray(val)) {
+				val.map((elem) => {
+					groups[elem] = groups[elem] || [];
+					groups[elem].push(item);
+				})
+			} else {
+				groups[val] = groups[val] || [];
+				groups[val].push(item);
+			}
+			return groups;
+		}, {})
+	}
 };
 
 export const groupByCategoryProps = (currentProps) => {

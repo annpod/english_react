@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { VoicePlayer, VoiceRecognition } from 'react-voice-components';
 import Sequence from '../Components/Sequence';
 import { initData } from '../../actions/word';
-import { randomIntFromInterval } from '../../selectors';
+import {groupSelectWord, randomIntFromInterval} from '../../selectors';
 import Match from "../Components/Match";
 
 import {
@@ -14,7 +14,8 @@ import {
 import {
 	groupBy,
 	groupSelect,
-	groupByCategory
+	groupByCategory,
+	getListWord,
 } from '../../selectors';
 
 class Vocabulary extends Component {
@@ -48,7 +49,6 @@ class Vocabulary extends Component {
 	async componentDidMount() {
 		await this.props.getWordList();
 		this.props.saveCategory(this.props.selectSet[0].value);
-
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -190,8 +190,8 @@ console.log("data", data);
 }
 
 const mapStateToProps = state => ({
-	selectSet: groupSelect(state),
-	data: groupByCategory(state),
+	selectSet: groupSelectWord(state),
+	data: getListWord(state),
 });
 
 const mapDispatchToProps = {

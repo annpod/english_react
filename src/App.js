@@ -14,6 +14,7 @@ import Family from './screens/Family';
 import AdminPanel from './screens/Admin/AdminPanel';
 import Words from './screens/Admin/Words';
 import Question from './screens/Admin/Question';
+import ChooseCorrect from './screens/ChooseCorrect/ChooseCorrect';
 
 //const history = syncHistoryWithStore(browserHistory, store);
 
@@ -23,13 +24,12 @@ export default () => {
 		<Provider store={store}>
 			<Router>
 				<Switch>
-					<Route exact path='/' component={Vocabulary}/>
+					<Route path='/test' component={ChooseCorrect}/>
 					<Route path='/family' component={Family}/>
-					<Route exact path='/admin' component={AdminPanel}/>
+					<Route path='/admin' component={AdminPanel}/>
 					<Route path='/question' component={Question}/>
 					<Route path='/word' component={Words}/>
-
-
+					<Route exect path='/' component={Vocabulary}/>
 				</Switch>
 			</Router>
 		</Provider>
