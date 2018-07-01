@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import fontawesome from '@fortawesome/fontawesome';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
+
 import Select from 'react-select';
+import Button from '../../Components/Button';
+import CheckBoxGroup from '../../Components/CheckBoxGroup';
 import AnswerItem from '../components/AnswerItem';
 
 import {
@@ -22,11 +22,10 @@ class NewQuestion extends Component {
 		super(props);
 		this.state = {
 			question: "",
-			answer: "1111",
 			multi: true,
 			value: [],
 			isEdit: true,
-			answersList: [{ answer:"", correct:"" }],
+			answersList: [{ answer:"", correct: false }],
 			answersListLength: 1,
 		};
 
@@ -51,16 +50,17 @@ class NewQuestion extends Component {
 	}
 
 	addNewAnswer() {
-		const newItem = [{answer:"", correct:""}];
+		const newItem = [{answer:"", correct: false}];
 		this.setState({
 			answersList: [...this.state.answersList, ...newItem],
 		})
 	}
 
-	updateAnswerList(index, answer) {
-		const answers = Object.assign([], this.state.answersList);
-		answers[index] = answer;
-		this.setState({ answersList: answers });
+	updateAnswerList(value, checked, index) {
+		const answer = { answer: value, correct: checked };
+		const answersList = Object.assign([], this.state.answersList);
+		answersList[index] = answer;
+		this.setState({ answersList });
 	}
 
 	saveNewQuestion() {
@@ -94,22 +94,29 @@ class NewQuestion extends Component {
 						value={multi ? multiValue : value}
 					/>
 					<input className="input-question" name="question" value={question} onChange={this.updateInput}/>
-					<button className="button-image button-image_save" onClick={this.saveNewQuestion}>
-						<FontAwesomeIcon icon="save" />
-					</button>
+					<Button
+						type='icon'
+						icon='save'
+						value='save'
+						onClick={this.saveNewQuestion}
+					/>
 				</div>
 				<div className="new-answer__wrapp">
 					{answersList.map((item, index) => (
-						<AnswerItem
-							key={index}
-							item={item}
-							updateAnswerList={this.updateAnswerList}
+						<CheckBoxGroup
 							index={index}
+							key={index}
+							checked={answersList[index].correct}
+							updateAnswerList={this.updateAnswerList}
+							value={item.answer}
 						/>
 					))}
-					<button className="button-image button-image_save" onClick={this.addNewAnswer}>
-						<FontAwesomeIcon icon={faPlus} />
-					</button>
+					<Button
+						type='icon'
+						icon='plus'
+						value='save'
+						onClick={this.addNewAnswer}
+					/>	
 				</div>
 			</div>
 		);

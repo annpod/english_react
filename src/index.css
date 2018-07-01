@@ -181,7 +181,7 @@ input.error {border: 1px solid #aa283f !important;}
 	margin-right: 10px;
 	padding-left: 7px;
 }
-button {
+button.button {
 	min-width: 70px;
 	min-height: 32px;
 	line-height: 21px;
@@ -190,6 +190,9 @@ button {
 	cursor: pointer;
 	outline: none !important;
 	margin: 2px;
+}
+button.button.active {
+	border: 2px solid green;
 }
 hr{
 	margin: 20px 10px;

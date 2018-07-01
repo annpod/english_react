@@ -4,6 +4,7 @@ import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
 import Select from 'react-select';
+import Button from '../../Components/Button';
 import AnswerItem from '../components/AnswerItem';
 
 import {
@@ -73,7 +74,6 @@ class QuestionItem extends Component {
 	}
 
 	updateAnswerList(index, answer) {
-		console.log("this.state.editAnswer", this.state.editAnswer);
 		const answers = Object.assign([], this.state.isEdit ? this.state.editAnswer : this.state.answersList);
 		answers[index] = answer;
 		this.setState({ editAnswer: answers });
@@ -85,6 +85,7 @@ class QuestionItem extends Component {
 	}
 
 	async saveEdit() {
+		console.log("saveEdit");
 		const { editAnswer, editQuestion, multiValue } = this.state;
 		const { item, subject } = this.props;
 		let categoryVar = multiValue;
@@ -129,7 +130,6 @@ class QuestionItem extends Component {
 	render() {
 		const { question, answer, multi, multiValue, isEdit, answersList, editQuestion, editAnswer } = this.state;
 		const { item, selectSet } = this.props;
-		console.log("item.answer", item.answer)
 		return (
 			<div className="test">
 				<Select.Creatable
@@ -151,12 +151,6 @@ class QuestionItem extends Component {
 								index={index}
 							/>
 						))}
-						<button className="button-image button-image_save" onClick={this.editQuestion}>
-							<FontAwesomeIcon icon={faPencilAlt} />
-						</button>
-						<button onClick={this.deleteQuestion} className="button-image button-image_delete">
-							<FontAwesomeIcon icon="trash-alt" />
-						</button>
 					</div>
 					:
 					<div>
@@ -169,18 +163,21 @@ class QuestionItem extends Component {
 								updateAnswerList={this.updateAnswerList}
 								index={index}
 							/>
-						))}
-						<span>
-							<button className="button-image button-image_save" onClick={this.saveEdit}>
-								<FontAwesomeIcon icon="save" />
-							</button>
-							<button className="button-image button-image_cancel" onClick={this.cancelEdit}>
-								<FontAwesomeIcon icon="ban" />
-							</button>
-						</span>
-
+						))}	
 					</div>
 				}
+				<Button
+					type='icon'
+					icon={isEdit ? 'save' : 'edit' }
+					value={isEdit ? 'save' : 'edit' }
+					onClick={isEdit ? this.saveEdit : this.editQuestion}
+				/>	
+				<Button
+					type='icon'
+					icon={isEdit ? 'cancel' : 'trash-alt'}
+					value={isEdit ? 'cancel' : 'trash'}
+					onClick={isEdit ? this.cancelEdit : this.deleteQuestion}
+				/>
 
 			</div>
 		);

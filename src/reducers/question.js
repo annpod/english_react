@@ -27,6 +27,7 @@ const initialState = {
 
 const handlers = {
 	[GET_QUESTION_LIST_SUCCESS]: (state, { payload }) => {
+		console.log("payload", payload);
 		return { questionList: payload };
 	},
 	[CATEGORY_LIST_QUESTION]: (state, { payload }) => {

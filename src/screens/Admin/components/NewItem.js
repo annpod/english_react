@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
-
+import Button from '../../Components/Button';
 import {
 	addWord,
 	categoryList,
@@ -77,9 +77,12 @@ class NewItem extends Component {
 						<td><input className="input-edit" name="word" value={word} onChange={this.updateInput}/></td>
 						<td><input className="input-edit" name="translation" value={translation} onChange={this.updateInput}/></td>
 						<td>
-							<button className="button-image button-image_save" onClick={this.addWord}>
-								<FontAwesomeIcon icon="save" />
-							</button>
+						<Button
+							type='icon'
+							icon='save'
+							value='save'
+							onClick={this.addWord}
+						/>							
 						</td>
 					</tr>
 		);

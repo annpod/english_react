@@ -50,7 +50,8 @@ exports.update = function (req, res) {
 	var question = {
 		question: req.body.question,
 		answer: req.body.answer,
-		category: req.body.category
+		category: req.body.category,
+		subject: req.body.subject
 	};
 	Question.update(req.params.id, question, function (err, result) {
 		if (err) {

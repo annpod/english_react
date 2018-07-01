@@ -28,7 +28,6 @@ class AnswerItem extends Component {
 	}
 
 	updateCheckbox(event) {
-		console.log("event.target.name",event.target.name);
 		this.setState({ [event.target.name]: event.target.checked });
 		this.props.updateAnswerList(this.props.index, { answer: this.state.answer, correct: event.target.checked });
 	}

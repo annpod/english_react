@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Button from '../../Components/Button';
+
 const navList = [{
 		value: "english",
 		label: "English"
@@ -16,27 +18,32 @@ class SubjectNavigation extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-		activeIndex: 0
+			subject: navList[0].value,
 		};
-	this.onClick = this.onClick.bind(this);
+		this.onClick = this.onClick.bind(this);
 	}
 
-	onClick(value, index) {
-	console.log("value,index", value,index);
-		const subject = value;	
-		this.setState({activeIndex: index});	
+	onClick(e) {
+		const subject = e.target.value;	
+		this.setState({ subject });	
 		this.props.onClick(subject);
 	}
 
 	render() {
-		const { activeIndex } = this.state;
+		const { activeIndex, subject } = this.state;
 		return (
 			<ul className="subject-nav">
-			{navList.map((item, index) => (
-				<li className="subject-nav__item" key={index}>
-					<button value={item.value} className={index === activeIndex ? "active" : ""} onClick={() => this.onClick(item.value, index)}>{item.label}</button>
-				</li>
-			))}				
+				{navList.map((item, index) => (
+					<li className="subject-nav__item" key={index}>
+						<Button
+							type='button'
+							label={item.label}
+							value={item.value}
+							active={subject === item.value}
+							onClick={this.onClick}
+						/>
+					</li>
+				))}				
 			</ul>
 		);
 	}

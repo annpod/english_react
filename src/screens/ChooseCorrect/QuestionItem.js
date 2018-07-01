@@ -1,71 +1,49 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import fontawesome from '@fortawesome/fontawesome';
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
+import Button from '../Components/Button';
 import Select from 'react-select';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import AnswerItem from './AnswerItem';
-
+import CheckBoxGroup from '../Components/CheckBoxGroup';
+import {
+	categoryList
+} from "../../selectors";
 
 class QuestionItem extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			question: props.item.question,
-			answer: props.item.answer,
-			multi: true,
-			value: [],
-			isEdit: false,
-			answersList: [{ answer:"", correct:"" }],
-			answersListLength: 1,
 		};
-		this.state.multiValue = categoryList(props.item.category);
 
-		this.handleOnChange = this.handleOnChange.bind(this);
+		this.updateAnswerList = this.updateAnswerList.bind(this);
 	}
 
-	handleOnChange (value) {
-		const { multi } = this.state;
-		if (multi) {
-			this.setState({ multiValue: value });
-		} else {
-			this.setState({ value });
-		}
-	}
 
+	updateAnswerList(value, checked, index) {
+		this.props.updateAnswerList(this.props.index, index, checked);
+	}
 
 	render() {
-		const { question, answer, multi, multiValue, isEdit, answersList, editQuestion, editAnswer } = this.state;
-		const { item, selectSet } = this.props;
-		console.log("item.answer", item.answer)
+		const { item, showErrors, updateAnswerList, isError, answer } = this.props;
+		//console.log("answer", answer);
 		return (
 			<div className="test">
 					<div>{item.question}</div>
-					{item.answer.map((item, index) => (
-						<AnswerItem
-							isDisabled
-							key={index}
-							item={item}
+					{showErrors && isError && <div>error<FontAwesomeIcon icon="times" /></div>}
+					{answer.map((answerItem, answerIndex) => (
+						<CheckBoxGroup
+							index={answerIndex}
+							key={`${answerIndex}1`}
+							checked={answerItem.correct}
 							updateAnswerList={this.updateAnswerList}
-							index={index}
+							value={answerItem.answer}
 						/>
 					))}
-
-					<button className="button-image button-image_save" onClick={this.saveEdit}>
-						<FontAwesomeIcon icon="plus" />
-					</button>
+									
 			</div>
 		);
 	}
 }
-const mapStateToProps = (state) => ({
 
-});
-
-const mapDispatchToProps = {
-
-};
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionItem);
+export default QuestionItem;

@@ -4,6 +4,7 @@ import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import Select from 'react-select';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
+import Button from '../../Components/Button';
 import {
 	updateData,
 	deleteData,
@@ -130,31 +131,27 @@ class ListItem extends Component {
 					</td>
 					<td key={`${index}2`}>
 						{isEdit ?
-							<input className="input-edit"  name="editTranslation" value={editTranslation} onChange={this.updateInput}/>
+							<input className="input-edit" name="editTranslation" value={editTranslation} onChange={this.updateInput}/>
 							:
 							<div className="table-text">{item.translation}</div>
 						}
 						</td>
 					<td>
-					{isEdit ?
-						<span>
-							<button className="button-image button-image_save" onClick={this.saveEditWord}>
-								<FontAwesomeIcon icon="save" />
-							</button>
-							<button className="button-image button-image_cancel" onClick={this.cancelEditWord}>
-								<FontAwesomeIcon icon="ban" />
-							</button>
-						</span>
-						:
-						<span>
-							<button onClick={this.editWord} className="button-image button-image_edit">
-								<FontAwesomeIcon icon={faPencilAlt} />
-							</button>
-							<button onClick={this.deleteWord} className="button-image button-image_delete">
-								<FontAwesomeIcon icon="trash-alt" />
-							</button>
-						</span>
-					}
+					
+					<span>
+						<Button
+							type='icon'
+							icon={isEdit ? 'save' : 'edit'}
+							value={isEdit ? 'save' : 'edit'}
+							onClick={isEdit ? this.saveEditWord : this.editWord}
+						/>
+						<Button
+							type='icon'
+							icon={isEdit ? 'ban' : 'trash-alt'}
+							value='cancel'
+							onClick={isEdit ? this.cancelEditWord : this.deleteWord}
+						/>
+					</span>	
 				</td>
 			</tr>
 		)

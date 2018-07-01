@@ -4,9 +4,9 @@ import fontawesome from '@fortawesome/fontawesome';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faPlus, faPencilAlt } from '@fortawesome/fontawesome-free-solid';
 import Select from 'react-select';
+import Button from '../Components/Button';
 import NewQuestion from '../Admin/components/NewQuestion';
-import QuestionItem from '../Admin/components/QuestionItem';
-import Navigation from '../Admin/components/Navigation';
+import QuestionItem from './QuestionItem';
 import SubjectNavigation from '../Admin/components/SubjectNavigation';
 
 import {
@@ -20,7 +20,7 @@ import {
 } from "../../selectors";
 
 
-class Question extends Component {
+class ChooseCorrect extends Component {
 
 	constructor(props) {
 		super(props);
@@ -28,6 +28,9 @@ class Question extends Component {
 			multi: true,
 			value: [],
 			subject: "",
+			showErrors: false,
+			answerList: [],
+			error: [],
 		};
 
 		this.getData = this.getData.bind(this);
@@ -35,15 +38,18 @@ class Question extends Component {
 		this.handleOnChange = this.handleOnChange.bind(this);
 		this.updateAnswerList = this.updateAnswerList.bind(this);
 		this.setSubject = this.setSubject.bind(this);
+		this.checkAnswers = this.checkAnswers.bind(this);
+		this.getAnswers = this.getAnswers.bind(this);
+		this.updateAnswerList = this.updateAnswerList.bind(this);
+		this.showError = this.showError.bind(this);
+		this.hideError = this.hideError.bind(this);
 
-	}
-
-	componentWillMount() {
 	}
 
 	async getData() {
 		const { subject } = this.state;
 		await this.props.getQuestionListBySubject(subject);
+		this.getAnswers();
 	}
 
 	updateInput(event) {
@@ -61,7 +67,6 @@ class Question extends Component {
 		for (let category of value) {
 			categoryArray.push(category.value);
 		}
-		console.log("categoryArray", categoryArray);
 		this.props.categoryList(categoryArray);
 	}
 
@@ -72,13 +77,62 @@ class Question extends Component {
 	}
 
 	setSubject(subject) {
+		this.hideError();
 		this.setState({subject},
 			() => this.getData()
 		)
 	}
 
+	showError() {
+		this.setState({ showErrors: true })
+	}
+
+	hideError() {
+		this.setState({ showErrors: false })
+	}
+
+	getAnswers () {
+		const { data } = this.props;
+		let error = [];
+		let answerList = [];
+		answerList = JSON.parse(JSON.stringify(this.props.data));
+
+		answerList.forEach((elem, index) => {
+			error[index] = true;
+			elem.answer.forEach((item, itemIndex) => {
+				answerList[index].answer[itemIndex].correct = false;				
+			});
+		});
+		this.setState({
+			answerList,
+			error,
+		});	 	
+	}
+
+	updateAnswerList(questionIndex, answerIndex, checked) {
+		const answerList = Object.assign([], this.state.answerList);
+		answerList[questionIndex].answer[answerIndex].correct = checked;
+		this.setState({ answerList });
+		this.checkAnswers(answerList, questionIndex);
+	}
+
+	checkAnswers(answer, index) {		
+		console.log("answer", answer[index]);
+		const { data } = this.props;
+		console.log("data[index]",this.props.data[index]);
+		const error = Object.assign([], this.state.error);
+		console.log("JSON.stringify(answer[index]", JSON.stringify(answer[index]));
+		
+		if( JSON.stringify(answer[index]) === JSON.stringify(data[index])) {
+			error[index] = false;
+		} else {
+			error[index] = true;		
+		}
+		this.setState({ error })
+	}
+
 	render() {
-		const { multi, multiValue, subject } = this.state;
+		const { multi, multiValue, subject, showErrors, error, answerList } = this.state;
 		const { data, selectSet } = this.props;
 		console.log("data", data);
 		return (
@@ -93,13 +147,25 @@ class Question extends Component {
 						options={selectSet}
 						onChange={this.handleOnChange}
 						value={multi ? multiValue : value}
-					/>
-					Question
-					<NewQuestion getData={this.getData} subject={subject} />
+					/>					
 
-					{data && data.map((item, index) =>(
-						<QuestionItem item={item} key={index} getData={this.getData} subject={subject}/>
+					{answerList.map((item, index) =>(
+						<QuestionItem
+							index={index}
+							item={item}
+							answer={item.answer}
+							key={index}
+							showErrors={showErrors}
+							isError={error[index]}
+							updateAnswerList={this.updateAnswerList}
+						/>
 					))}
+					<Button
+						type='icon'
+						icon='check'
+						value='check'
+						onClick={this.showError}
+					/>	
 				</div>
 			</div>
 		);
@@ -117,4 +183,4 @@ const mapDispatchToProps = {
 };
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Question);
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseCorrect);

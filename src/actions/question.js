@@ -79,7 +79,7 @@ export const getQuestionListBySubject = (subject) => async (dispatch) => {
 			error: true,
 		});
 	}
-};getQuestionListBySubject
+};
 
 export const updateQuestion = (id, body) => async (dispatch) => {
 	console.log("id", id);
