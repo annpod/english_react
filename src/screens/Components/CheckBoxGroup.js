@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CheckBoxGroup = ({ index, value, checked, updateAnswerList, disabled }) => (
+const CheckBoxGroup = ({ index, value, checked, updateAnswerList, disabled, disableInput }) => (
 	<div className="checkbox-group">
 		<label className="checkbox-group__label" >
 			<input
@@ -18,9 +18,10 @@ const CheckBoxGroup = ({ index, value, checked, updateAnswerList, disabled }) =>
 		<input
 			className="input-question"
 			name="answer"
+			type="text"
 			index={index}
 			value={value}
-			disabled={disabled}
+			disabled={disabled || disableInput}
 			onChange={(event)=>updateAnswerList(event.target.value, checked, index)}
 		/>
 	</div>		

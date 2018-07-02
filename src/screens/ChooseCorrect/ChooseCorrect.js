@@ -56,7 +56,7 @@ class ChooseCorrect extends Component {
 		this.setState({[event.target.name]: event.target.value});
 	}
 
-	handleOnChange (value) {
+	async handleOnChange (value) {
 		const { multi } = this.state;
 		if (multi) {
 			this.setState({ multiValue: value });
@@ -67,7 +67,8 @@ class ChooseCorrect extends Component {
 		for (let category of value) {
 			categoryArray.push(category.value);
 		}
-		this.props.categoryList(categoryArray);
+		await this.props.categoryList(categoryArray);
+		this.getAnswers();
 	}
 
 	updateAnswerList(index, answer) {
@@ -117,11 +118,8 @@ class ChooseCorrect extends Component {
 	}
 
 	checkAnswers(answer, index) {		
-		console.log("answer", answer[index]);
 		const { data } = this.props;
-		console.log("data[index]",this.props.data[index]);
 		const error = Object.assign([], this.state.error);
-		console.log("JSON.stringify(answer[index]", JSON.stringify(answer[index]));
 		
 		if( JSON.stringify(answer[index]) === JSON.stringify(data[index])) {
 			error[index] = false;

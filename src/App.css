@@ -153,6 +153,9 @@ select {
 	position: relative;
 }
 input.error {border: 1px solid #aa283f !important;}
+input[type="text"]:disabled {
+	border: none;
+}
 #language {
 	width: 100px;
 	margin-bottom: 10px;
@@ -1134,4 +1137,14 @@ input[type="checkbox"] {
 }
 .new-answer__wrapp {
 	display: flex; 
+}
+.icon-error {
+	color: red;
+}
+.icon-correct {
+	color: green;
+}
+.subject-nav {
+	display: flex;
+	list-style: none;
 }

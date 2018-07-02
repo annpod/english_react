@@ -29,8 +29,10 @@ class QuestionItem extends Component {
 		//console.log("answer", answer);
 		return (
 			<div className="test">
-					<div>{item.question}</div>
-					{showErrors && isError && <div>error<FontAwesomeIcon icon="times" /></div>}
+					<div>{item.question}
+						{showErrors && isError && <span className="icon-error"><FontAwesomeIcon icon="times" /></span>}
+						{showErrors && !isError && <span className="icon-correct"><FontAwesomeIcon icon="check" /></span>}
+					</div>
 					{answer.map((answerItem, answerIndex) => (
 						<CheckBoxGroup
 							index={answerIndex}
@@ -38,6 +40,7 @@ class QuestionItem extends Component {
 							checked={answerItem.correct}
 							updateAnswerList={this.updateAnswerList}
 							value={answerItem.answer}
+							disableInput
 						/>
 					))}
 									

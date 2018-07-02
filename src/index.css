@@ -736,7 +736,9 @@ hr{
 input[type="checkbox"] {
 
 }
-
+input[type="text"]:disabled {
+	border: none;
+}
 .checkbox-container {
 	display: block;
 	position: relative;
@@ -1068,4 +1070,10 @@ button.active {
 }
 .new-answer__wrapp {
 	display: block; 
+}
+.icon-error {
+	color: red;
+}
+.icon-correct {
+	color: green;
 }
